@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+#include "io.h"
+
 int csr_start(int argc, char *argv[]);
 
 #endif //START_H_INCLUDED__

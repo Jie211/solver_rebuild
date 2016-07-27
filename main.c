@@ -5,6 +5,7 @@
 int main(int argc, char *argv[])
 {
   int error = csr_start(argc, argv);
-  error_handle(error, "csr_start error");
+  if(!error_handle(error, "error in csr_start"))
+    return -1;
   return 0;
 }
