@@ -10,20 +10,20 @@ int get_cmd(int argc, char *argv[],
   int longindex;
   struct option longopts[] = 
   {
-    {"Matrix", required_argument, NULL, 'M'},
+    {"Matrix", required_argument, NULL, 'm'},
     {"OuterSolver", required_argument, NULL, 'S'},
-    {"InnerSolver", optional_argument, NULL, 's'},
-    {"OuterMaxLoop", optional_argument, NULL, 'L'},
-    {"InnerMaxLoop", optional_argument, NULL, 'l'},
-    {"OuterEPS", optional_argument, NULL, 'E'},
-    {"InnerEPS", optional_argument, NULL, 'e'},
-    {"OuterRestart", optional_argument, NULL, 'R'},
-    {"InnerRestart", optional_argument, NULL, 'r'},
-    {"OuterKskip", optional_argument, NULL, 'K'},
-    {"InnerKskip", optional_argument, NULL, 'k'},
-    {"OuterFix", optional_argument, NULL, 'F'},
-    {"InnerFix", optional_argument, NULL, 'f'},
-    {"Thread", optional_argument, NULL, 't'},
+    {"InnerSolver", required_argument, NULL, 's'},
+    {"OuterMaxLoop", required_argument, NULL, 'L'},
+    {"InnerMaxLoop", required_argument, NULL, 'l'},
+    {"OuterEPS", required_argument, NULL, 'E'},
+    {"InnerEPS", required_argument, NULL, 'e'},
+    {"OuterRestart", required_argument, NULL, 'R'},
+    {"InnerRestart", required_argument, NULL, 'r'},
+    {"OuterKskip", required_argument, NULL, 'K'},
+    {"InnerKskip", required_argument, NULL, 'k'},
+    {"OuterFix", required_argument, NULL, 'F'},
+    {"InnerFix", required_argument, NULL, 'f'},
+    {"Thread", required_argument, NULL, 't'},
     {"Cuda", no_argument, NULL, 'c'},
     {"Verbose", no_argument, NULL, 'v'},
     {0,        0,           0,      0 },
@@ -31,17 +31,17 @@ int get_cmd(int argc, char *argv[],
 
   while((opt=getopt_long_only(argc, argv, "m:S:s:L:l:E:e:R:r:K:k:F:f:t:cv", longopts, &longindex)) != -1)
   {
-    printf("%d %s\n", longindex, longopts[longindex].name);
+    /* printf("%d %s\n", longindex, longopts[longindex].name); */
     switch(opt)
     {
       case 'm':
-        c_matrix=optarg;
+        strcpy(c_matrix, optarg);
         break;
       case 'S':
-        c_outer_solver=optarg;
+        strcpy(c_outer_solver, optarg);
         break;
       case 's':
-        c_inner_solver=optarg;
+        strcpy(c_inner_solver, optarg);
         break;
       case 'L':
         *i_outer_maxloop=atoi(optarg);
@@ -54,7 +54,7 @@ int get_cmd(int argc, char *argv[],
         break;
       case 'R':
         *i_outer_restart=atoi(optarg);
-         break;
+        break;
       case 'r':
         *i_inner_restart=atoi(optarg);
         break;
@@ -90,14 +90,14 @@ int get_cmd(int argc, char *argv[],
 int check_cmd(char *c_matrix, 
     char *c_outer_solver, int *i_outer_maxloop, double *d_outer_eps, int *i_outer_restart, int *i_outer_kskip, int *i_outer_fix,
     char *c_inner_solver, int *i_inner_maxloop, double *d_inner_eps, int *i_inner_restart, int *i_inner_kskip, int *i_inner_fix,
-   int *i_thread, bool *f_cuda, bool *f_verbose)
+   int *i_thread, bool *f_cuda, bool *f_verbose, const int c_size)
 {
-  if(c_matrix==NULL)
+  if(strncmp(c_matrix, "", c_size)==0)
   {
     error_log("Must set Matrix name");
     return -1;
   }
-  if(c_outer_solver==NULL)
+  if(strncmp(c_outer_solver, "", c_size)==0)
   {
     error_log("Must set a Solver name");
     return -1;

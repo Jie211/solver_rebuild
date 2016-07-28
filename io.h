@@ -23,7 +23,7 @@ int get_cmd(int argc, char *argv[],
 int check_cmd(char *c_matrix, 
     char *c_outer_solver, int *i_outer_maxloop, double *d_outer_eps, int *i_outer_restart, int *i_outer_kskip, int *i_outer_fix,
     char *c_inner_solver, int *i_inner_maxloop, double *d_inner_eps, int *i_inner_restart, int *i_inner_kskip, int *i_inner_fix,
-   int *i_thread, bool *f_cuda, bool *f_verbose);
+   int *i_thread, bool *f_cuda, bool *f_verbose, const int c_size);
 
 void show_cmd(char *c_matrix, 
     char *c_outer_solver, int *i_outer_maxloop, double *d_outer_eps, int *i_outer_restart, int *i_outer_kskip, int *i_outer_fix,

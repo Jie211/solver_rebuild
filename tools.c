@@ -119,10 +119,10 @@ int error_handle(int error_code, char *msg)
 {
   if(error_code!=0)
   {
-    error_log(msg);
+    warning_log(msg);
     return -1;
   }else{
-    return 1;
+    return 0;
   }
 }
 
