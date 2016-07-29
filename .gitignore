@@ -1,2 +1,6 @@
 a.out
 tags
+*.swap
+*~
+.DS_Store
+*.o
