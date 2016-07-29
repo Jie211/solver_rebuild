@@ -1,6 +1,8 @@
 #ifndef SHARE_H_INCLUDED__
 #define SHARE_H_INCLUDED__
 
+#define EBUG
+
 enum SolverName{
   CG,
   CR,
@@ -17,6 +19,7 @@ enum SolverName{
 
 struct Parameter{
   char list[20][128];
+  bool isVP;
   bool f_cuda;
   bool f_verbose;
   char c_matrix[128];
@@ -33,6 +36,9 @@ struct Parameter{
   int i_outer_fix;
   int i_inner_fix;
   int i_thread;
+  char bx_path[128];
+  char ptr_path[128];
+  char col_path[128];
 };
 
 #endif //SHARE_H_INCLUDED__

@@ -13,23 +13,28 @@ void init_ver(struct Parameter *para)
   strcpy(para->list[8], "VPGCR");
   strcpy(para->list[9], "VPGMRES");
 
+  para->isVP=false;
+  para->f_cuda=false;
+  para->f_verbose=false;
   strcpy(para->c_matrix, "");
   
   para->c_outer_solver=NONE;
-  para->i_outer_maxloop=10000;
-  para->d_outer_eps=1e-8;
-  para->i_outer_restart=1000;
-  para->i_outer_fix=2;
-
   para->c_inner_solver=NONE;
+  para->i_outer_maxloop=10000;
   para->i_inner_maxloop=100;
+  para->d_outer_eps=1e-8;
   para->d_inner_eps=1e-1;
+  para->i_outer_restart=1000;
   para->i_inner_restart=10;
+  para->i_outer_kskip=2;
+  para->i_inner_kskip=2;
+  para->i_outer_fix=2;
   para->i_inner_fix=2;
-
   para->i_thread=8;
-  para->f_cuda=false;
-  para->f_verbose=false;
+
+  strcpy(para->bx_path, "");
+  strcpy(para->ptr_path, "");
+  strcpy(para->col_path, "");
 }
 
 int get_opt(int argc, char *argv[], struct Parameter *para)
@@ -117,6 +122,9 @@ int get_opt(int argc, char *argv[], struct Parameter *para)
         return -1;
     }
   }
+#ifdef EBUG
+  normal_log("pass get_opt");
+#endif
   return 0;
 }
 
@@ -152,6 +160,29 @@ int check_opt(struct Parameter *para)
     warning_log("Kskip can not smaller than 0");
     return -1;
   }
+  if(para->c_outer_solver==VPCG || para->c_outer_solver==VPCR || para->c_outer_solver==VPGCR || para->c_outer_solver==VPGMRES)
+  {
+    if(para->c_inner_solver==NONE)
+    {
+      warning_log("Outer solver use VP method, must set a inner solver");
+      return -1;
+    }else if(para->c_inner_solver==VPCG || para->c_inner_solver==VPCR || para->c_inner_solver==VPGCR || para->c_inner_solver==VPGMRES)
+    {
+      warning_log("Outer & Inner recurrence VP method !!");
+      return -1;
+    }else
+    {
+      para->isVP=true;
+    }
+  }
+  if(para->c_inner_solver!=NONE)
+  {
+    if(para->c_outer_solver!=VPCG && para->c_outer_solver!=VPCR && para->c_outer_solver!=VPGCR && para->c_outer_solver!=VPGMRES)
+    {
+      warning_log("Outer method was not VP, don't set inner solver");
+      return -1;
+    }
+  }
   return 0;
 }
 
@@ -170,56 +201,150 @@ void show_opt(struct Parameter *para)
   printf(" Outer Kskip: %d\n", para->i_outer_kskip);
   printf(" Outer Fix: %d\n", para->i_outer_fix);
   printf("****************************************\n");
-  printf(" Inner Solver: %s\n", para->list[para->c_inner_solver]);
-  printf(" Inner MaxLoop: %d\n", para->i_inner_maxloop);
-  printf(" Inner EPS: %.12e\n", para->d_inner_eps);
-  printf(" Inner Restart: %d\n", para->i_inner_restart);
-  printf(" Inner Kskip: %d\n", para->i_inner_kskip);
-  printf(" Inner Fix: %d\n", para->i_inner_fix);
-  printf("****************************************\n");
+  if(para->isVP)
+  {
+    printf(" Inner Solver: %s\n", para->list[para->c_inner_solver]);
+    printf(" Inner MaxLoop: %d\n", para->i_inner_maxloop);
+    printf(" Inner EPS: %.12e\n", para->d_inner_eps);
+    printf(" Inner Restart: %d\n", para->i_inner_restart);
+    printf(" Inner Kskip: %d\n", para->i_inner_kskip);
+    printf(" Inner Fix: %d\n", para->i_inner_fix);
+    printf("****************************************\n");
+  }
 }
 
 int check_solver(char *optarg, enum SolverName *solver)
 {
   if(strncmp(optarg, "CG", 2)==0 || strncmp(optarg, "cg", 2)==0)
   {
-    printf("get cg\n");
     *solver=CG;
   }else if(strncmp(optarg, "CR", 2)==0 || strncmp(optarg, "cr", 2)==0)
   {
-    printf("get cr\n");
     *solver=CR;
   }else if(strncmp(optarg, "GCR", 3)==0 || strncmp(optarg, "gcr", 3)==0)
   {
-    printf("get gcr\n");
     *solver=GCR;
   }else if(strncmp(optarg, "GMRES", 5)==0 || strncmp(optarg, "gmres", 5)==0)
   {
-    printf("get gmres\n");
     *solver=GMRES;
   }else if(strncmp(optarg, "KSKIPCG", 7)==0 || strncmp(optarg, "kskipcg", 7)==0)
   {
-    printf("get kskipcg\n");
     *solver=KSKIPCG;
   }else if(strncmp(optarg, "KSKIPCR", 7)==0 || strncmp(optarg, "kskipcr", 7)==0)
   {
-    printf("get kskipcr\n");
     *solver=KSKIPCR;
   }else if(strncmp(optarg, "VPCG", 4)==0 || strncmp(optarg, "vpcg", 4)==0)
   {
-    printf("get vpcg\n");
     *solver=VPCG;
   }else if(strncmp(optarg, "VPCR", 4)==0 || strncmp(optarg, "vpcr", 4)==0)
   {
-    printf("get vpcr\n");
     *solver=VPCR;
   }else if(strncmp(optarg, "VPGMRES", 7)==0 || strncmp(optarg, "vpgmres", 7)==0)
   {
-    printf("get vpgmres\n");
     *solver=VPGMRES;
   }else{
     warning_log("not defined solver name");
     return -1;
   }
+  return 0;
+}
+
+int find_mat(struct Parameter *para)
+{
+  DIR *dir;
+  struct dirent *dp;
+  struct stat st;
+  char path[512]="";
+  char fullpath[512+512]="";
+  char search_name[512]="";
+
+  bool dir_found=false;
+  bool file_found=false;
+  bool bx=false;
+  bool col=false;
+  bool ptr=false;
+
+  //TODO: option to change path
+  strcpy(search_name, para->c_matrix);
+  strcpy(path, "../Matrix/CSR/");
+
+  if((dir = opendir(path)) == NULL)
+  {
+    warning_log("open path failed");
+    return -1;
+  }
+  
+  for(dp=readdir(dir); dp!=NULL; dp=readdir(dir))
+  {
+    stat(dp->d_name, &st);
+    if(S_ISDIR(st.st_mode))
+    {
+      if(strcmp(dp->d_name, search_name) == 0)
+      {
+        dir_found = true;
+        break;
+      }
+    }
+  }
+
+  if(!dir_found)
+  {
+    warning_log("find matrix failed");
+    return -1;
+  }else
+  {
+#ifdef EBUG
+    normal_log("find matrix dir");
+#endif
+  }
+
+  strcpy(fullpath, path);
+  strcat(fullpath, search_name);
+  strcat(fullpath, "/");
+  if((dir = opendir(fullpath)) == NULL)
+  {
+    warning_log("open fullpath failed");
+    return -1;
+  }
+  for(dp=readdir(dir); dp!=NULL; dp=readdir(dir))
+  {
+    stat(dp->d_name, &st);
+    if(S_ISDIR(st.st_mode))
+    {
+      if(strcmp(dp->d_name, "bx.txt") == 0)
+      {
+        bx=true;
+      }else if(strcmp(dp->d_name, "ColVal.txt") == 0)
+      {
+        col=true;
+      }else if(strcmp(dp->d_name, "Ptr.txt") == 0)
+      {
+        ptr=true;
+      }
+      if(bx && col && ptr)
+      {
+        file_found=true;
+        break;
+      }
+    }
+  }
+  
+  if(!file_found)
+  {
+    warning_log("matrix file meybe missing ?");
+    return -1;
+  }else{
+    normal_log("find matrix file");
+  }
+
+  strcpy(para->bx_path, fullpath);
+  strcpy(para->ptr_path, fullpath);
+  strcpy(para->col_path, fullpath);
+  strcat(para->bx_path, "bx.txt");
+  strcat(para->ptr_path, "Ptr.txt");
+  strcat(para->col_path, "ColVal.txt");
+
+  closedir(dir);
+
   return 0;
 }

@@ -6,26 +6,29 @@
 !_TAG_PROGRAM_VERSION	5.8	//
 CG	share.h	/^  CG,$/;"	e	enum:SolverName
 CR	share.h	/^  CR,$/;"	e	enum:SolverName
+EBUG	share.h	4;"	d
 GCR	share.h	/^  GCR,$/;"	e	enum:SolverName
 GMRES	share.h	/^  GMRES,$/;"	e	enum:SolverName
-IO_H_INCLUDED__	io.h	/^#define IO_H_INCLUDED__$/;"	d
+IO_H_INCLUDED__	io.h	2;"	d
 KSKIPCG	share.h	/^  KSKIPCG,$/;"	e	enum:SolverName
 KSKIPCR	share.h	/^  KSKIPCR,$/;"	e	enum:SolverName
 NONE	share.h	/^  NONE$/;"	e	enum:SolverName
 Parameter	share.h	/^struct Parameter{$/;"	s
-SHARE_H_INCLUDED__	share.h	/^#define SHARE_H_INCLUDED__$/;"	d
-START_H_INCLUDED__	start.h	/^#define START_H_INCLUDED__$/;"	d
+SHARE_H_INCLUDED__	share.h	2;"	d
+START_H_INCLUDED__	start.h	2;"	d
 SolverName	share.h	/^enum SolverName{$/;"	g
-TOOLS_H_INCLUDED__	tools.h	/^#define TOOLS_H_INCLUDED__$/;"	d
+TOOLS_H_INCLUDED__	tools.h	2;"	d
 VPCG	share.h	/^  VPCG,$/;"	e	enum:SolverName
 VPCR	share.h	/^  VPCR,$/;"	e	enum:SolverName
 VPGCR	share.h	/^  VPGCR,$/;"	e	enum:SolverName
 VPGMRES	share.h	/^  VPGMRES,$/;"	e	enum:SolverName
+bx_path	share.h	/^  char bx_path[128];$/;"	m	struct:Parameter
 c_inner_solver	share.h	/^  enum SolverName c_inner_solver;$/;"	m	struct:Parameter	typeref:enum:Parameter::SolverName
 c_matrix	share.h	/^  char c_matrix[128];$/;"	m	struct:Parameter
 c_outer_solver	share.h	/^  enum SolverName c_outer_solver;$/;"	m	struct:Parameter	typeref:enum:Parameter::SolverName
 check_opt	io.c	/^int check_opt(struct Parameter *para)$/;"	f
 check_solver	io.c	/^int check_solver(char *optarg, enum SolverName *solver)$/;"	f
+col_path	share.h	/^  char col_path[128];$/;"	m	struct:Parameter
 csr_start	start.c	/^int csr_start(int argc, char *argv[])$/;"	f
 d_inner_eps	share.h	/^  double d_inner_eps;$/;"	m	struct:Parameter
 d_outer_eps	share.h	/^  double d_outer_eps;$/;"	m	struct:Parameter
@@ -33,6 +36,7 @@ error_handle	tools.c	/^int error_handle(int error_code, char *msg)$/;"	f
 error_log	tools.c	/^void error_log(char *output)$/;"	f
 f_cuda	share.h	/^  bool f_cuda;$/;"	m	struct:Parameter
 f_verbose	share.h	/^  bool f_verbose;$/;"	m	struct:Parameter
+find_mat	io.c	/^int find_mat(struct Parameter *para)$/;"	f
 free_1d	tools.c	/^void free_1d(double *ptr)$/;"	f
 free_1i	tools.c	/^void free_1i(int *ptr)$/;"	f
 free_2d	tools.c	/^void free_2d(double **ptr, int num)$/;"	f
@@ -48,6 +52,7 @@ i_outer_maxloop	share.h	/^  int i_outer_maxloop;$/;"	m	struct:Parameter
 i_outer_restart	share.h	/^  int i_outer_restart;$/;"	m	struct:Parameter
 i_thread	share.h	/^  int i_thread;$/;"	m	struct:Parameter
 init_ver	io.c	/^void init_ver(struct Parameter *para)$/;"	f
+isVP	share.h	/^  bool isVP;$/;"	m	struct:Parameter
 list	share.h	/^  char list[20][128];$/;"	m	struct:Parameter
 main	main.c	/^int main(int argc, char *argv[])$/;"	f
 malloc_1d	tools.c	/^double *malloc_1d(int num)$/;"	f
@@ -55,5 +60,6 @@ malloc_1i	tools.c	/^int *malloc_1i(int num)$/;"	f
 malloc_2d	tools.c	/^double **malloc_2d(int num_x, int num_y)$/;"	f
 malloc_2i	tools.c	/^int** malloc_2i(int num_x, int num_y)$/;"	f
 normal_log	tools.c	/^void normal_log(char *output)$/;"	f
+ptr_path	share.h	/^  char ptr_path[128];$/;"	m	struct:Parameter
 show_opt	io.c	/^void show_opt(struct Parameter *para)$/;"	f
 warning_log	tools.c	/^void warning_log(char *output)$/;"	f

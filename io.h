@@ -4,8 +4,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include <getopt.h>
 #include <stdbool.h>
+#include <dirent.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 #include "share.h"
 #include "tools.h"
@@ -15,6 +20,8 @@ int get_opt(int argc, char *argv[], struct Parameter *para);
 int check_opt(struct Parameter *para);
 int check_solver(char *optarg, enum SolverName *solver);
 void show_opt(struct Parameter *para);
+
+int find_mat(struct Parameter *para);
 
 #endif //IO_H_INCLUDED__
 

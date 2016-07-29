@@ -17,6 +17,11 @@ int csr_start(int argc, char *argv[])
   if(error_handle(error, "error in check_cmd")!=0)
     return -1;
 
+  error = find_mat(&para);
+  if(error_handle(error, "error in find_mat")!=0)
+    return -1;
+
   show_opt(&para);
+
   return 0;
 }
