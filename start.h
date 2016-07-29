@@ -6,6 +6,7 @@
 #include <stdbool.h>
 
 #include "io.h"
+#include "share.h"
 
 int csr_start(int argc, char *argv[]);
 

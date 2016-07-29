@@ -119,34 +119,11 @@ int error_handle(int error_code, char *msg)
 {
   if(error_code!=0)
   {
-    warning_log(msg);
+    error_log(msg);
     return -1;
   }else{
     return 0;
   }
 }
 
-void init_ver(char *c_matrix, 
-    char *c_outer_solver, int *i_outer_maxloop, double *d_outer_eps, int *i_outer_restart, int *i_outer_kskip, int *i_outer_fix,
-    char *c_inner_solver, int *i_inner_maxloop, double *d_inner_eps, int *i_inner_restart, int *i_inner_kskip, int *i_inner_fix,
-   int *i_thread, bool *f_cuda, bool *f_verbose)
-{
-  c_matrix=NULL;
-  
-  c_outer_solver=NULL;
-  *i_outer_maxloop=10000;
-  *d_outer_eps=1e-8;
-  *i_outer_restart=1000;
-  *i_outer_fix=2;
-
-  c_inner_solver=NULL;
-  *i_inner_maxloop=100;
-  *d_inner_eps=1e-1;
-  *i_inner_restart=10;
-  *i_inner_fix=2;
-
-  *i_thread=8;
-  f_cuda=false;
-  f_verbose=false;
-}
 

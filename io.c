@@ -1,13 +1,42 @@
 #include "io.h"
 
-int get_cmd(int argc, char *argv[], 
-    char *c_matrix, 
-    char *c_outer_solver, int *i_outer_maxloop, double *d_outer_eps, int *i_outer_restart, int *i_outer_kskip, int *i_outer_fix,
-    char *c_inner_solver, int *i_inner_maxloop, double *d_inner_eps, int *i_inner_restart, int *i_inner_kskip, int *i_inner_fix,
-   int *i_thread, bool *f_cuda, bool *f_verbose)
+void init_ver(struct Parameter *para)
+{
+  strcpy(para->list[0], "CG");
+  strcpy(para->list[1], "CR");
+  strcpy(para->list[2], "GCR");
+  strcpy(para->list[3], "GMRES");
+  strcpy(para->list[4], "KSKIPCG");
+  strcpy(para->list[5], "KSKIPCR");
+  strcpy(para->list[6], "VPCG");
+  strcpy(para->list[7], "VPCR");
+  strcpy(para->list[8], "VPGCR");
+  strcpy(para->list[9], "VPGMRES");
+
+  strcpy(para->c_matrix, "");
+  
+  para->c_outer_solver=NONE;
+  para->i_outer_maxloop=10000;
+  para->d_outer_eps=1e-8;
+  para->i_outer_restart=1000;
+  para->i_outer_fix=2;
+
+  para->c_inner_solver=NONE;
+  para->i_inner_maxloop=100;
+  para->d_inner_eps=1e-1;
+  para->i_inner_restart=10;
+  para->i_inner_fix=2;
+
+  para->i_thread=8;
+  para->f_cuda=false;
+  para->f_verbose=false;
+}
+
+int get_opt(int argc, char *argv[], struct Parameter *para)
 {
   int opt;
   int longindex;
+  int error;
   struct option longopts[] = 
   {
     {"Matrix", required_argument, NULL, 'm'},
@@ -35,123 +64,162 @@ int get_cmd(int argc, char *argv[],
     switch(opt)
     {
       case 'm':
-        strcpy(c_matrix, optarg);
+        strcpy(para->c_matrix, optarg);
         break;
       case 'S':
-        strcpy(c_outer_solver, optarg);
+        error=check_solver(optarg, &para->c_outer_solver);
+        if(error_handle(error, "error in outer solver name")!=0)
+          return -1;
         break;
       case 's':
-        strcpy(c_inner_solver, optarg);
+        error=check_solver(optarg, &para->c_inner_solver);
+        if(error_handle(error, "error in inner solver name")!=0)
+          return -1;
         break;
       case 'L':
-        *i_outer_maxloop=atoi(optarg);
+        para->i_outer_maxloop=atoi(optarg);
         break;
       case 'l':
-        *i_inner_maxloop=atoi(optarg);
+        para->i_inner_maxloop=atoi(optarg);
         break;
       case 'E':
-        *d_outer_eps=atof(optarg);
+        para->d_outer_eps=atof(optarg);
         break;
       case 'R':
-        *i_outer_restart=atoi(optarg);
+        para->i_outer_restart=atoi(optarg);
         break;
       case 'r':
-        *i_inner_restart=atoi(optarg);
+        para->i_inner_restart=atoi(optarg);
         break;
       case 'K':
-        *i_outer_kskip=atoi(optarg);
+        para->i_outer_kskip=atoi(optarg);
         break;
       case 'k':
-        *i_inner_kskip=atoi(optarg);
+        para->i_inner_kskip=atoi(optarg);
         break;
       case 'F':
-        *i_outer_fix=atoi(optarg);
+        para->i_outer_fix=atoi(optarg);
         break;
       case 'f':
-        *i_inner_fix=atoi(optarg);
+        para->i_inner_fix=atoi(optarg);
         break;
       case 't':
-        *i_thread=atoi(optarg);
+        para->i_thread=atoi(optarg);
         break;
       case 'c':
-        *f_cuda=true;
+        para->f_cuda=true;
         break;
       case 'v':
-        *f_verbose=true;
+        para->f_verbose=true;
         break;
       default:
-        error_log("unknow option");
+        warning_log("Unknow option");
         return -1;
     }
   }
   return 0;
 }
 
-int check_cmd(char *c_matrix, 
-    char *c_outer_solver, int *i_outer_maxloop, double *d_outer_eps, int *i_outer_restart, int *i_outer_kskip, int *i_outer_fix,
-    char *c_inner_solver, int *i_inner_maxloop, double *d_inner_eps, int *i_inner_restart, int *i_inner_kskip, int *i_inner_fix,
-   int *i_thread, bool *f_cuda, bool *f_verbose, const int c_size)
+int check_opt(struct Parameter *para)
 {
-  if(strncmp(c_matrix, "", c_size)==0)
+  if(strncmp(para->c_matrix, "", 128)==0)
   {
-    error_log("Must set Matrix name");
+    warning_log("Must set Matrix name");
     return -1;
   }
-  if(strncmp(c_outer_solver, "", c_size)==0)
+  if(para->c_outer_solver==NONE)
   {
-    error_log("Must set a Solver name");
+    warning_log("Must set a Solver name");
     return -1;
   }
-  if(*i_outer_maxloop <=0 || *i_inner_maxloop <=0)
+  if(para->i_outer_maxloop <=0 || para->i_inner_maxloop <=0)
   {
-    error_log("Maxloop must larger than 0");
+    warning_log("Maxloop must larger than 0");
     return -1;
   }
-  if(*d_outer_eps <=0.0 || *d_inner_eps <=0.0)
+  if(para->d_outer_eps <=0.0 || para->d_inner_eps <=0.0)
   {
-    error_log("EPS must larger than 0.0");
+    warning_log("EPS must larger than 0.0");
     return -1;
   }
-  if(*i_outer_restart <0 || *i_inner_restart <0)
+  if(para->i_outer_restart <0 || para->i_inner_restart <0)
   {
-    error_log("Restart can not smaller than 0");
+    warning_log("Restart can not smaller than 0");
     return -1;
   }
-  if(*i_outer_kskip <0 || *i_inner_kskip <0)
+  if(para->i_outer_kskip <0 || para->i_inner_kskip <0)
   {
-    error_log("Kskip can not smaller than 0");
+    warning_log("Kskip can not smaller than 0");
     return -1;
   }
-  //TODO
-  //i_outer_fix & i_inner_fix
-
-  //logic check
   return 0;
 }
 
-void show_cmd(char *c_matrix, 
-    char *c_outer_solver, int *i_outer_maxloop, double *d_outer_eps, int *i_outer_restart, int *i_outer_kskip, int *i_outer_fix,
-    char *c_inner_solver, int *i_inner_maxloop, double *d_inner_eps, int *i_inner_restart, int *i_inner_kskip, int *i_inner_fix,
-   int *i_thread, bool *f_cuda, bool *f_verbose)
+void show_opt(struct Parameter *para)
 {
   printf("****************************************\n");
-  printf(" Matrix: %s\n", c_matrix);
-  printf(" OpenMP Thread: %d\n", *i_thread);
-  printf(" Verbose: %d\n", *f_verbose);
-  printf(" CUDA: %d\n", *f_cuda);
+  printf(" Matrix: %s\n", para->c_matrix);
+  printf(" OpenMP Thread: %d\n", para->i_thread);
+  printf(" Verbose: %d\n", para->f_verbose);
+  printf(" CUDA: %d\n", para->f_cuda);
   printf("****************************************\n");
-  printf(" Outer Solver: %s\n", c_outer_solver);
-  printf(" Outer MaxLoop: %d\n", *i_outer_maxloop);
-  printf(" Outer EPS: %.12e\n", *d_outer_eps);
-  printf(" Outer Restart: %d\n", *i_outer_restart);
-  printf(" Outer Kskip: %d\n", *i_outer_kskip);
-  printf(" Outer Fix: %d\n", *i_outer_fix);
+  printf(" Outer Solver: %s\n", para->list[para->c_outer_solver]);
+  printf(" Outer MaxLoop: %d\n", para->i_outer_maxloop);
+  printf(" Outer EPS: %.12e\n", para->d_outer_eps);
+  printf(" Outer Restart: %d\n", para->i_outer_restart);
+  printf(" Outer Kskip: %d\n", para->i_outer_kskip);
+  printf(" Outer Fix: %d\n", para->i_outer_fix);
   printf("****************************************\n");
-  printf(" Inner Solver: %s\n", c_inner_solver);
-  printf(" Inner MaxLoop: %d\n", *i_inner_maxloop);
-  printf(" Inner EPS: %.12e\n", *d_inner_eps);
-  printf(" Inner Restart: %d\n", *i_inner_restart);
-  printf(" Inner Kskip: %d\n", *i_inner_kskip);
-  printf(" Inner Fix: %d\n", *i_inner_fix);
+  printf(" Inner Solver: %s\n", para->list[para->c_inner_solver]);
+  printf(" Inner MaxLoop: %d\n", para->i_inner_maxloop);
+  printf(" Inner EPS: %.12e\n", para->d_inner_eps);
+  printf(" Inner Restart: %d\n", para->i_inner_restart);
+  printf(" Inner Kskip: %d\n", para->i_inner_kskip);
+  printf(" Inner Fix: %d\n", para->i_inner_fix);
   printf("****************************************\n");
+}
+
+int check_solver(char *optarg, enum SolverName *solver)
+{
+  if(strncmp(optarg, "CG", 2)==0 || strncmp(optarg, "cg", 2)==0)
+  {
+    printf("get cg\n");
+    *solver=CG;
+  }else if(strncmp(optarg, "CR", 2)==0 || strncmp(optarg, "cr", 2)==0)
+  {
+    printf("get cr\n");
+    *solver=CR;
+  }else if(strncmp(optarg, "GCR", 3)==0 || strncmp(optarg, "gcr", 3)==0)
+  {
+    printf("get gcr\n");
+    *solver=GCR;
+  }else if(strncmp(optarg, "GMRES", 5)==0 || strncmp(optarg, "gmres", 5)==0)
+  {
+    printf("get gmres\n");
+    *solver=GMRES;
+  }else if(strncmp(optarg, "KSKIPCG", 7)==0 || strncmp(optarg, "kskipcg", 7)==0)
+  {
+    printf("get kskipcg\n");
+    *solver=KSKIPCG;
+  }else if(strncmp(optarg, "KSKIPCR", 7)==0 || strncmp(optarg, "kskipcr", 7)==0)
+  {
+    printf("get kskipcr\n");
+    *solver=KSKIPCR;
+  }else if(strncmp(optarg, "VPCG", 4)==0 || strncmp(optarg, "vpcg", 4)==0)
+  {
+    printf("get vpcg\n");
+    *solver=VPCG;
+  }else if(strncmp(optarg, "VPCR", 4)==0 || strncmp(optarg, "vpcr", 4)==0)
+  {
+    printf("get vpcr\n");
+    *solver=VPCR;
+  }else if(strncmp(optarg, "VPGMRES", 7)==0 || strncmp(optarg, "vpgmres", 7)==0)
+  {
+    printf("get vpgmres\n");
+    *solver=VPGMRES;
+  }else{
+    warning_log("not defined solver name");
+    return -1;
+  }
+  return 0;
 }
