@@ -268,6 +268,7 @@ int find_mat(struct Parameter *para)
   strcpy(search_name, para->c_matrix);
   strcpy(path, "../Matrix/CSR/");
 
+
   if((dir = opendir(path)) == NULL)
   {
     warning_log("open path failed");
@@ -309,8 +310,10 @@ int find_mat(struct Parameter *para)
   for(dp=readdir(dir); dp!=NULL; dp=readdir(dir))
   {
     stat(dp->d_name, &st);
-    if(S_ISDIR(st.st_mode))
-    {
+    /* if(S_ISDIR(st.st_mode)) */
+    /* { */
+
+      /* printf("!!%s\n", dp->d_name); */
       if(strcmp(dp->d_name, "bx.txt") == 0)
       {
         bx=true;
@@ -326,7 +329,8 @@ int find_mat(struct Parameter *para)
         file_found=true;
         break;
       }
-    }
+
+    /* } */
   }
   
   if(!file_found)
@@ -345,6 +349,124 @@ int find_mat(struct Parameter *para)
   strcat(para->col_path, "ColVal.txt");
 
   closedir(dir);
+
+  return 0;
+}
+
+int get_mat_head(const struct Parameter *para, int *N, int *NNZ)
+{
+  FILE *in1, *in2, *in3;
+  int N_x[3], N_y[3], N_NNZ[3], i;
+
+  if((in1=fopen(para->bx_path, "r")) == NULL)
+  {
+    warning_log("fopen failed");
+    return -1;
+  }
+  if((in2=fopen(para->col_path, "r")) == NULL)
+  {
+    warning_log("fopen failed");
+    return -1;
+  }
+  if((in3=fopen(para->ptr_path, "r")) == NULL)
+  {
+    warning_log("fopen failed");
+    return -1;
+  }
+
+  fscanf(in1, "%d %d %d\n", &N_x[0], &N_y[0], &N_NNZ[0]);
+  fscanf(in2, "%d %d %d\n", &N_x[1], &N_y[1], &N_NNZ[1]);
+  fscanf(in3, "%d %d %d\n", &N_x[2], &N_y[2], &N_NNZ[2]);
+
+  for(i=0;i<3;i++)
+  {
+    if(N_x[i] != N_y[i])
+    {
+      warning_log("N_x != N_y");
+      return -1;
+    }
+  }
+  if(N_x[0] != N_x[1] || N_x[1] != N_x[2] || N_x[2] != N_x[0])
+  {
+    warning_log("N_x was not same in 3files");
+    return -1;
+  }
+  if(N_y[0] != N_y[1] || N_y[1] != N_y[2] || N_y[2] != N_y[0])
+  {
+    warning_log("N_y was not same in 3files");
+    return -1;
+  }
+  if(N_NNZ[0] != N_NNZ[1] || N_NNZ[1] != N_NNZ[2] || N_NNZ[2] != N_NNZ[0])
+  {
+    warning_log("N_NNZ was not same in 3files");
+    return -1;
+  }
+
+  *N=N_x[0];
+  *NNZ=N_NNZ[0];
+
+  fclose(in1);
+  fclose(in2);
+  fclose(in3);
+
+#ifdef EBUG
+  char size[10];
+  sprintf(size, "get N=%d, NNZ=%d", *N, *NNZ);
+  normal_log(size);
+#endif
+
+  return 0;
+}
+
+int get_mat_data(const struct Parameter *para, int *col, int *ptr, double *val, double *bvec, double *xvec, const int N, const int NNZ)
+{
+  FILE *in1, *in2, *in3;
+  int i, getint, skip1, skip2, skip3;
+  double getdouble, getdouble2;
+
+  if((in1 = fopen(para->col_path, "r")) == NULL)
+  {
+    warning_log("open file failed");
+    return -1;
+  }
+  if((in2 = fopen(para->ptr_path, "r")) == NULL)
+  {
+    warning_log("open file failed");
+    return -1;
+  }
+  if((in3 = fopen(para->bx_path, "r")) == NULL)
+  {
+    warning_log("open file failed");
+    return -1;
+  }
+
+  fscanf(in1, "%d %d %d\n", &skip1, &skip2, &skip3);
+  fscanf(in2, "%d %d %d\n", &skip1, &skip2, &skip3);
+  fscanf(in3, "%d %d %d\n", &skip1, &skip2, &skip3);
+
+  for(i=0;i<NNZ;i++)
+  {
+    fscanf(in1, "%d %le\n", &getint, &getdouble);
+    col[i] = getint;
+    val[i] = getdouble;
+  }
+  
+  for(i=0;i<N+1;i++)
+  {
+    fscanf(in2, "%d\n", &getint);
+    ptr[i] = getint;
+  }
+
+  for(i=0;i<N;i++)
+  {
+    fscanf(in3, "%le %le\n", &getdouble, &getdouble2);
+    bvec[i] = getdouble;
+    xvec[i] = getdouble2;
+  }
+
+  fclose(in1);
+  fclose(in2);
+  fclose(in3);
 
   return 0;
 }

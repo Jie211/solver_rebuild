@@ -41,6 +41,8 @@ free_1d	tools.c	/^void free_1d(double *ptr)$/;"	f
 free_1i	tools.c	/^void free_1i(int *ptr)$/;"	f
 free_2d	tools.c	/^void free_2d(double **ptr, int num)$/;"	f
 free_2i	tools.c	/^void free_2i(int **ptr, int num)$/;"	f
+get_mat_data	io.c	/^int get_mat_data(const struct Parameter *para, int *col, int *ptr, double *val, double *bvec, double *xvec, const int N, const int NNZ)$/;"	f
+get_mat_head	io.c	/^int get_mat_head(const struct Parameter *para, int *N, int *NNZ)$/;"	f
 get_opt	io.c	/^int get_opt(int argc, char *argv[], struct Parameter *para)$/;"	f
 i_inner_fix	share.h	/^  int i_inner_fix;$/;"	m	struct:Parameter
 i_inner_kskip	share.h	/^  int i_inner_kskip;$/;"	m	struct:Parameter
@@ -61,5 +63,6 @@ malloc_2d	tools.c	/^double **malloc_2d(int num_x, int num_y)$/;"	f
 malloc_2i	tools.c	/^int** malloc_2i(int num_x, int num_y)$/;"	f
 normal_log	tools.c	/^void normal_log(char *output)$/;"	f
 ptr_path	share.h	/^  char ptr_path[128];$/;"	m	struct:Parameter
+set_openmp_thread	tools.c	/^int set_openmp_thread(int thread)$/;"	f
 show_opt	io.c	/^void show_opt(struct Parameter *para)$/;"	f
 warning_log	tools.c	/^void warning_log(char *output)$/;"	f

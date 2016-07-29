@@ -126,4 +126,24 @@ int error_handle(int error_code, char *msg)
   }
 }
 
+int set_openmp_thread(int thread)
+{
+  int error;
+  char env[128];
+  char setThreads[10];
+  sprintf(setThreads, "%d", thread);
+  error = setenv("OMP_NUM_THREADS", setThreads, 1);
+  if(error!=0)
+    return -1;
+  strcpy(env, "OMP_NUM_THREADS=");
+  strcat(env, setThreads);
+  error = putenv(env);
+  if(error!=0)
+    return -1;
+  omp_set_num_threads(thread);
+#ifdef EBUG
+  normal_log("pass set openmp thread");
+#endif
+  return 0;
+}
 

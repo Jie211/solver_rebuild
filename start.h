@@ -7,6 +7,7 @@
 
 #include "io.h"
 #include "share.h"
+#include "tools.h"
 
 int csr_start(int argc, char *argv[]);
 

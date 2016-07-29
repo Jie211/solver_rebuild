@@ -4,6 +4,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
+#include <omp.h>
+
+#include "share.h"
 
 void error_log(char *output);
 
@@ -28,6 +32,8 @@ void free_1i(int *ptr);
 void free_2i(int **ptr, int num);
 
 int error_handle(int error_code, char *msg);
+
+int set_openmp_thread(int thread);
 
 #endif //TOOLS_H_INCLUDED__
 
