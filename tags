@@ -4,7 +4,11 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
+BLAS_H_INCLUDED__	blas.h	2;"	d
 CG	share.h	/^  CG,$/;"	e	enum:SolverName
+CG_CRS	CRS/cg.c	/^int CG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool isinner)$/;"	f
+CG_H_INCLUDED__	CRS/cg.h	2;"	d
+CG_Init	CRS/cg.c	/^void CG_Init(double *rvec, double *pvec, double *Av, double *xvec, const int N)$/;"	f
 CR	share.h	/^  CR,$/;"	e	enum:SolverName
 EBUG	share.h	4;"	d
 GCR	share.h	/^  GCR,$/;"	e	enum:SolverName
@@ -12,8 +16,10 @@ GMRES	share.h	/^  GMRES,$/;"	e	enum:SolverName
 IO_H_INCLUDED__	io.h	2;"	d
 KSKIPCG	share.h	/^  KSKIPCG,$/;"	e	enum:SolverName
 KSKIPCR	share.h	/^  KSKIPCR,$/;"	e	enum:SolverName
+MV_mult_CSR	blas.c	/^void MV_mult_CSR(double *out, const double *val, const int *col, const int *ptr, const double *vec, const int N)$/;"	f
 NONE	share.h	/^  NONE$/;"	e	enum:SolverName
 Parameter	share.h	/^struct Parameter{$/;"	s
+SELECTER_H_INCLUDED__	selecter.h	2;"	d
 SHARE_H_INCLUDED__	share.h	2;"	d
 START_H_INCLUDED__	start.h	2;"	d
 SolverName	share.h	/^enum SolverName{$/;"	g
@@ -32,10 +38,14 @@ col_path	share.h	/^  char col_path[128];$/;"	m	struct:Parameter
 csr_start	start.c	/^int csr_start(int argc, char *argv[])$/;"	f
 d_inner_eps	share.h	/^  double d_inner_eps;$/;"	m	struct:Parameter
 d_outer_eps	share.h	/^  double d_outer_eps;$/;"	m	struct:Parameter
+dot_d	blas.c	/^double dot_d(const double *x, const double *y, const int N)$/;"	f
+error_d_CRS	blas.c	/^double error_d_CRS(double *val, const int *col, const int *ptr, const double *b, const double *x_new, const double *x_0, const int N)$/;"	f
 error_handle	tools.c	/^int error_handle(int error_code, char *msg)$/;"	f
 error_log	tools.c	/^void error_log(char *output)$/;"	f
 f_cuda	share.h	/^  bool f_cuda;$/;"	m	struct:Parameter
 f_verbose	share.h	/^  bool f_verbose;$/;"	m	struct:Parameter
+file_init	tools.c	/^FILE *file_init(const char *name, const char *mode)$/;"	f
+file_print	tools.c	/^void file_print(FILE *fp, double *vec, int N)$/;"	f
 find_mat	io.c	/^int find_mat(struct Parameter *para)$/;"	f
 free_1d	tools.c	/^void free_1d(double *ptr)$/;"	f
 free_1i	tools.c	/^void free_1i(int *ptr)$/;"	f
@@ -61,8 +71,16 @@ malloc_1d	tools.c	/^double *malloc_1d(int num)$/;"	f
 malloc_1i	tools.c	/^int *malloc_1i(int num)$/;"	f
 malloc_2d	tools.c	/^double **malloc_2d(int num_x, int num_y)$/;"	f
 malloc_2i	tools.c	/^int** malloc_2i(int num_x, int num_y)$/;"	f
+norm_1_d	blas.c	/^double norm_1_d(double *v, const int N)$/;"	f
+norm_2_d	blas.c	/^double norm_2_d(double *v, const int N)$/;"	f
 normal_log	tools.c	/^void normal_log(char *output)$/;"	f
+outer_selecter	selecter.c	/^int outer_selecter(struct Parameter *para, double *bvec, double *xvec, double *val, int *col, int *ptr, const int N, const int NNZ)$/;"	f
 ptr_path	share.h	/^  char ptr_path[128];$/;"	m	struct:Parameter
+scalar_d	blas.c	/^void scalar_d(double *out, const double a, const double *x, const int N)$/;"	f
+scalar_xpy_d	blas.c	/^void scalar_xpy_d(double *out, const double a, const double *x, const double *y, const int N)$/;"	f
 set_openmp_thread	tools.c	/^int set_openmp_thread(int thread)$/;"	f
 show_opt	io.c	/^void show_opt(struct Parameter *para)$/;"	f
+vec_copy	tools.c	/^void vec_copy(double *t, double *f, int size)$/;"	f
+vec_init	tools.c	/^void vec_init(double *v, double val, int size)$/;"	f
+vec_sub	blas.c	/^void vec_sub(double *out, const double *x, const double *y, const int N)$/;"	f
 warning_log	tools.c	/^void warning_log(char *output)$/;"	f

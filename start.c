@@ -10,8 +10,6 @@ int csr_start(int argc, char *argv[])
   double *bvec, *xvec, *val;
   int *col, *ptr;
 
-  int i;
-
   init_ver(&para);
 
   error = get_opt(argc, argv, &para);
@@ -53,6 +51,9 @@ int csr_start(int argc, char *argv[])
   if(error_handle(error, "error in get_mat_data")!=0)
     return -1;
 
+  error = outer_selecter(&para, bvec, xvec, val, col, ptr, N, NNZ);
+  if(error_handle(error, "error in outer_selecter")!=0)
+    return -1;
 
   if( para.f_cuda == false )
   {

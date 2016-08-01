@@ -4,18 +4,21 @@ void error_log(char *output)
 {
   printf("\x1b[31m");
   printf("[×] %s\n",output);
+  printf("\x1b[0m");
 }
 
 void warning_log(char *output)
 {
   printf("\x1b[33m");
   printf("[△] %s\n",output);
+  printf("\x1b[0m");
 }
 
 void normal_log(char *output)
 {
   printf("\x1b[32m");
   printf("[◯] %s\n",output);
+  printf("\x1b[0m");
 }
 
 double *malloc_1d(int num)
@@ -147,3 +150,40 @@ int set_openmp_thread(int thread)
   return 0;
 }
 
+FILE *file_init(const char *name, const char *mode)
+{
+  FILE *tmp;
+  if((tmp = fopen(name, mode)) == NULL)
+  {
+    warning_log("file open failed");
+    exit(-1);
+  }
+  return (tmp);
+}
+
+void vec_init(double *v, double val, int size)
+{
+  int i;
+  for(i=0;i<size;i++)
+  {
+    v[i]=val;
+  }
+}
+
+void vec_copy(double *t, double *f, int size)
+{
+  int i;
+  for(i=0;i<size;i++)
+  {
+    t[i] = f[i];
+  }
+}
+
+void file_print(FILE *fp, double *vec, int N)
+{
+  int i;
+  for(i=0;i<N;i++)
+  {
+    fprintf(fp, "%d %.12e\n", i, vec[i]);
+  }
+}

@@ -1,5 +1,6 @@
-a.out
-tags
+/a.out
+/tags
+/output/*
 *.swap
 *~
 .DS_Store

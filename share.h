@@ -3,6 +3,8 @@
 
 #define EBUG
 
+#include <stdbool.h>
+
 enum SolverName{
   CG,
   CR,

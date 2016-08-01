@@ -467,6 +467,9 @@ int get_mat_data(const struct Parameter *para, int *col, int *ptr, double *val, 
   fclose(in1);
   fclose(in2);
   fclose(in3);
+#ifdef EBUG
+  normal_log("done get Mat data");
+#endif
 
   return 0;
 }

@@ -8,6 +8,7 @@
 #include "io.h"
 #include "share.h"
 #include "tools.h"
+#include "selecter.h"
 
 int csr_start(int argc, char *argv[]);
 

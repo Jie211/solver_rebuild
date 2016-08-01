@@ -35,5 +35,15 @@ int error_handle(int error_code, char *msg);
 
 int set_openmp_thread(int thread);
 
+FILE *file_init(const char *name, const char *mode);
+
+void vec_init(double *v, double val, int size);
+
+void vec_copy(double *t, double *f, int size);
+
+void file_print(FILE *fp, double *vec, int N);
+
+double error_d_CRS(double *val, const int *col, const int *ptr, const double *b, const double *x_new, const double *x_0, const int N);
+
 #endif //TOOLS_H_INCLUDED__
 
