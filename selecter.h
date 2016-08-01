@@ -8,6 +8,7 @@
 #include "io.h"
 #include "share.h"
 #include "./CRS/cg.h"
+#include "./CRS/cr.h"
 
 int outer_selecter(struct Parameter *para, double *bvec, double *xvec, double *val, int *col, int *ptr, const int N, const int NNZ);
 

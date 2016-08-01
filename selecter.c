@@ -10,7 +10,11 @@ int outer_selecter(struct Parameter *para, double *bvec, double *xvec, double *v
     if(para->c_outer_solver == CG)
     {
       handle = CG_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
-    }else{
+    }else if(para->c_outer_solver == CR)
+    {
+      handle = CR_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
+    }
+    else{
       error_log("not define now");
       return -1;
     }

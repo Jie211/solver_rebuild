@@ -10,6 +10,9 @@ CG_CRS	CRS/cg.c	/^int CG_CRS(double *val, int *col, int *ptr, double *bvec, doub
 CG_H_INCLUDED__	CRS/cg.h	2;"	d
 CG_Init	CRS/cg.c	/^void CG_Init(double *rvec, double *pvec, double *Av, double *xvec, const int N)$/;"	f
 CR	share.h	/^  CR,$/;"	e	enum:SolverName
+CR_CRS	CRS/cr.c	/^int CR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool isinner)$/;"	f
+CR_H_INCLUDED__	CRS/cr.h	2;"	d
+CR_init	CRS/cr.c	/^void CR_init(double *rvec, double *pvec, double *qvec, double *svec, double *xvec, const int N)$/;"	f
 EBUG	share.h	4;"	d
 GCR	share.h	/^  GCR,$/;"	e	enum:SolverName
 GMRES	share.h	/^  GMRES,$/;"	e	enum:SolverName
