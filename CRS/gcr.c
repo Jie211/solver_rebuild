@@ -10,7 +10,7 @@ void GCR_init(double *rvec, double *Av, double *x_0, double *qq, double **qvec, 
   vec_init_2(pvec, 0.0, N, restart);
 }
 
-int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool isinner)
+int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)
 {
   int loop=0;
   int kloop, iloop;
@@ -18,35 +18,41 @@ int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const s
   double *rvec, *Av, *x_0, *qq;
   double **qvec, **pvec;
   double alpha, beta, rnorm, bnorm;
+
   bool out_flag = false;
   double error = 0.0;
-
   double t_error = 0.0;
 
   int i_max = 0;
   double d_eps = 0.0;
-  int exit_flag = 0.0;
   int i_restart=0;
+  bool f_verbose=para->f_verbose;
+  bool f_isVP=para->isVP;
+  bool f_cuda=para->f_cuda;
+
+  int exit_flag = 0.0;
 
   FILE *p_x = NULL, *p_his = NULL;
 
   double dot_tmp = 0.0;
 
-  if(!isinner)
+  if(!f_isinner)
   {
     p_x = file_init("./output/GCR_x.txt", "w");
     p_his = file_init("./output/GCR_his.txt", "w");
   }
 
-  if(!isinner)
+  if(!f_isinner)
   {
     i_restart = para->i_outer_restart;
   }else{
     i_restart = para->i_inner_restart;
   }
 
-  if(para->f_cuda!=true)
+  if(f_cuda)
   {
+    error_log("not done yet");
+  }else{
     rvec = malloc_1d(N);
     Av = malloc_1d(N);
     x_0 = malloc_1d(N);
@@ -62,7 +68,7 @@ int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const s
   //init
   GCR_init(rvec, Av, xvec, qq, qvec, pvec, N, i_restart);
 
-  if(para->isVP == true && isinner == true)
+  if(f_isVP && f_isinner)
   {
     i_max = para->i_inner_maxloop;
     d_eps = para->d_inner_eps;
@@ -80,11 +86,11 @@ int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const s
   while(loop<i_max)
   {
     //Ax
-    if(para->f_cuda!=true)
+    if(f_cuda)
     {
-      MV_mult_CSR(Av, val, col, ptr, xvec, N);
-    }else{
       error_log("not done yet");
+    }else{
+      MV_mult_CSR(Av, val, col, ptr, xvec, N);
     }
 
     //r=b-Ax
@@ -94,8 +100,10 @@ int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const s
     vec_copy(pvec[0], rvec, N);
 
     //Ap
-    if(para->f_cuda!=true)
+    if(f_cuda)
     {
+      error_log("not done yet");
+    }else{
       MV_mult_CSR(qvec[0], val, col, ptr, pvec[0], N);
     }
 
@@ -103,9 +111,9 @@ int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const s
     {
       rnorm = norm_2_d(rvec, N);
       error = rnorm / bnorm;
-      if(!isinner)
+      if(!f_isinner)
       {
-        if(para->f_verbose)
+        if(f_verbose)
         {
           printf("%d %.12e\n", loop+1, error);
         }
@@ -128,24 +136,24 @@ int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const s
       loop++;
 
       //(q, q)
-      if(para->f_cuda!=true)
+      if(f_cuda)
       {
-        dot_tmp = dot_d(qvec[kloop], qvec[kloop], N);
-      }else{
         error_log("not done");
         return -1;
+      }else{
+        dot_tmp = dot_d(qvec[kloop], qvec[kloop], N);
       }
 
       qq[kloop] = dot_tmp;
 
 
       //alpha = (r,q)/(q,q)
-      if(para->f_cuda!=true)
+      if(f_cuda)
       {
-        dot_tmp = dot_d(rvec, qvec[kloop], N);
-      }else{
         error_log("not done");
         return -1;
+      }else{
+        dot_tmp = dot_d(rvec, qvec[kloop], N);
       }
 
       alpha = dot_tmp / qq[kloop];
@@ -161,12 +169,13 @@ int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const s
       scalar_xpy_d(rvec, -alpha, qvec[kloop], rvec, N);
 
       //Ar
-      if(para->f_cuda!=true)
+      if(f_cuda)
       {
-        MV_mult_CSR(Av, val, col, ptr, rvec, N);
-      }else{
         error_log("not done ");
         return -1;
+
+      }else{
+        MV_mult_CSR(Av, val, col, ptr, rvec, N);
       }
 
       //init p[k+1] q[k+1]
@@ -176,8 +185,10 @@ int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const s
       for(iloop=0;iloop<=kloop;iloop++)
       {
         //beta=-(Az, qvec)/(q,q)
-        if(para->f_cuda!=true)
+        if(f_cuda)
         {
+          error_log("not done yet");
+        }else{
           dot_tmp = dot_d(Av, qvec[iloop], N);
         }
         beta = -(dot_tmp)/qq[iloop];
@@ -197,7 +208,7 @@ int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const s
       break;
     }
   }
-  if(!isinner)
+  if(!f_isinner)
   {
     file_print(p_x, xvec, N);
     fclose(p_x);
@@ -205,12 +216,14 @@ int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const s
     printf("|b-ax|2/|b|2=%.1f\n", t_error);
     printf("loop=%d\n", loop+1);
   }
-  if(isinner && para->f_verbose)
+  if(f_isinner && f_verbose)
   {
     printf("Inner %d %.12e\n", loop+1, error);
   }
-  if(para->f_cuda != true)
+  if(f_cuda)
   {
+    error_log("not done yet");
+  }else{
     free_1d(rvec);
     free_1d(Av);
     free_1d(x_0);
@@ -218,7 +231,7 @@ int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const s
     free_2d(qvec, i_restart);
     free_2d(pvec, i_restart);
   }
-  if(isinner)
+  if(f_isinner)
   {
     fclose(p_x);
     fclose(p_his);

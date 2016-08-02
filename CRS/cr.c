@@ -8,7 +8,7 @@ void CR_init(double *rvec, double *pvec, double *qvec, double *svec, double *xve
   vec_init(xvec, 0.0, N);
 }
 
-int CR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool isinner)
+int CR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)
 {
   int loop;
 
@@ -16,29 +16,32 @@ int CR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const st
   double alpha, beta, bnorm, rnorm;
   double rs, rs2;
 
-  int  exit_flag = 2;
   int i_max = 0;
   double d_eps = 0.0;
+  bool f_isVP = para->isVP;
+  bool f_verbose = para->f_verbose;
+  bool f_cuda = para->f_cuda;
 
+  int exit_flag = 2;
   double t_error = 0.0;
 
   FILE *p_x=NULL, *p_his=NULL;
 
-  if(!isinner)
+  if(!f_isinner)
   {
     p_x=file_init("./output/CR_x.txt", "w");
     p_his=file_init("./output/CR_his.txt", "w");
   }
 
-  if(para->f_cuda != true)
+  if(f_cuda)
   {
+    error_log("not done yet");
+  }else{
     rvec = malloc_1d(N);
     pvec = malloc_1d(N);
     qvec = malloc_1d(N);
     svec = malloc_1d(N);
     x_0 = malloc_1d(N);
-  }else{
-    error_log("not done yet");
   }
 
   //
@@ -48,7 +51,7 @@ int CR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const st
   //int
   CR_init(rvec, pvec, qvec, svec, xvec, N);
 
-  if(para->isVP == true && isinner == true)
+  if(f_isVP && f_isinner)
   {
     i_max = para->i_inner_maxloop;
     d_eps = para->d_inner_eps;
@@ -64,11 +67,11 @@ int CR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const st
   bnorm = norm_2_d(bvec, N);
 
   //Ax
-  if(para->f_cuda!=true)
+  if(f_cuda)
   {
-    MV_mult_CSR(qvec, val, col, ptr, xvec, N);
-  }else{
     error_log("not done yet");
+  }else{
+    MV_mult_CSR(qvec, val, col, ptr, xvec, N);
   }
 
   //r=b-Ax
@@ -78,8 +81,10 @@ int CR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const st
   vec_copy(pvec, rvec, N);
 
   //q=Ap
-  if(para->f_cuda!=true)
+  if(f_cuda)
   {
+    error_log("not done yet");
+  }else{
     MV_mult_CSR(qvec, val, col, ptr, pvec, N);
   }
 
@@ -87,8 +92,10 @@ int CR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const st
   vec_copy(svec, qvec, N);
 
   //(r, s)
-  if(para->f_cuda!=true)
+  if(f_cuda)
   {
+    error_log("not done yet");
+  }else{
     rs = dot_d(rvec, svec, N);
   }
 
@@ -96,9 +103,9 @@ int CR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const st
   {
     rnorm = norm_2_d(rvec, N);
     error = rnorm / bnorm;
-    if(!isinner)
+    if(!f_isinner)
     {
-      if(para->f_verbose)
+      if(f_verbose)
       {
         printf("%d %.12e\n", loop+1, error);
       }
@@ -123,8 +130,10 @@ int CR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const st
     scalar_xpy_d(rvec, -alpha, qvec, rvec, N);
 
     //s=Ar
-    if(para->f_cuda!=true)
+    if(f_cuda)
     {
+      error_log("not done yet");
+    }else{
       MV_mult_CSR(svec, val, col, ptr, rvec, N);
     }
 
@@ -143,7 +152,7 @@ int CR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const st
     scalar_xpy_d(qvec, beta, qvec, svec, N);
   }
 
-  if(!isinner)
+  if(!f_isinner)
   {
     file_print(p_x, xvec, N);
     fclose(p_x);
@@ -151,18 +160,20 @@ int CR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const st
     printf("|b-ax|2/|b|2=%.1f\n", t_error);
     printf("loop=%d\n", loop+1);
   }
-  if(isinner && para->f_verbose)
+  if(f_isinner && f_verbose)
   {
     printf("Inner %d %.12e\n", loop+1, error);
   }
-  if(para->f_cuda != true)
+  if(f_cuda)
   {
+    error_log("not done yet");
+  }else{
     free_1d(rvec);
     free_1d(pvec);
     free_1d(qvec);
     free_1d(x_0);
   }
-  if(isinner)
+  if(f_isinner)
   {
     fclose(p_x);
     fclose(p_his);

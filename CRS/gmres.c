@@ -33,27 +33,33 @@ void GMRES_init(double *rvec, double *axvec, double *evec, double *vvec, double 
   }
 }
 
-int GMRES_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool isinner)
+int GMRES_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)
 {
   int i, j, k;
   double *rvec, *axvec, *evec, *vvec, *vmtx, *hmtx, *yvec, *wvec, *avvec, *hvvec, *cvec, *svec, *x0vec, *tmpvec, *x_0;
   double alpha, wv_ip;
   int count = 0;
   double tmp, tmp2, error = 0.0, b_norm;
+
   int exit_flag = 2;
   double t_error;
+
   int i_restart=0;
   int i_max=0;
   double d_eps=0.0;
+  /* bool f_isVP=para->isVP; */
+  bool f_verbose=para->f_verbose;
+  bool f_cuda=para->f_cuda;
+
   FILE *p_x=NULL, *p_his=NULL;
 
-  if(!isinner)
+  if(!f_isinner)
   {
     p_x=file_init("./output/GMRES_x.txt", "w");
     p_his=file_init("./output/GMRES_his.txt", "w");
   }
 
-  if(!isinner)
+  if(!f_isinner)
   {
     i_restart = para->i_outer_restart;
     i_max = para->i_outer_maxloop;
@@ -64,8 +70,10 @@ int GMRES_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const
     d_eps = para->d_inner_eps;
   }
 
-  if(para->f_cuda!=true)
+  if(f_cuda)
   {
+    error_log("not done yet");
+  }else{
     rvec = malloc_1d(N);
     axvec= malloc_1d(N);
     evec = malloc_1d(i_restart);
@@ -99,28 +107,15 @@ int GMRES_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const
   for(count=0;count<i_max;)
   {
     //Ax0
-    /* if(para->f_cuda!=true) */
-    /* { */
-    /*   MV_mult_CSR(axvec, val, col, ptr, xvec, N); */
-    /* }else{ */
-    /*   error_log("not done yet"); */
-    /* } */
-    for(i=0;i<N;i++)
+    if(f_cuda)
     {
-      tmp=0.0;
-      for(j=ptr[i];j<ptr[i+1];j++)
-      {
-        tmp += val[j] * xvec[col[j]];
-      }
-      axvec[i] = tmp;
+      error_log("not done yet");
+    }else{
+      MV_mult_CSR(axvec, val, col, ptr, xvec, N);
     }
 
     //r0 = b-Ax0
-    /* vec_sub(rvec, bvec, axvec, N); */
-    for(i=0;i<N;i++)
-    {
-      rvec[i] = bvec[i] - axvec[i];
-    }
+    vec_sub(rvec, bvec, axvec, N);
 
     //2norm rvec
     tmp = norm_2_d(rvec, N);
@@ -131,20 +126,15 @@ int GMRES_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const
       vmtx[0*N+i] = vvec[i];
     }
 
-    /* vec_init(evec, 0.0, i_restart); */
-    /* evec[0] = tmp; */
+    vec_init(evec, 0.0, i_restart);
     evec[0] = tmp;
-    for(i=1;i<i_restart;i++)
-    {
-      evec[i] = 0.0;
-    }
 
     for(k=0;k<i_restart-1;k++)
     {
       error = fabs(evec[k]) / b_norm;
-      if(!isinner)
+      if(!f_isinner)
       {
-        if(para->f_verbose)
+        if(f_verbose)
         {
           printf("%d %.12e\n", count+1, error);
         }
@@ -154,11 +144,7 @@ int GMRES_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const
       {
         solve_Hye(hmtx, yvec, evec, k, N);
 
-        /* vec_init(tmpvec, 0.0, N); */
-        for(i=0;i<N;i++)
-        {
-          tmpvec[i]=0.0;
-        }
+        vec_init(tmpvec, 0.0, N);
 
         for(i=0;i<k;i++)
         {
@@ -168,11 +154,7 @@ int GMRES_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const
           }
         }
 
-        /* vec_add(xvec, x0vec, tmpvec, N); */
-        for(i=0;i<N;i++)
-        {
-          xvec[i] = x0vec[i] + tmpvec[i];
-        }
+        vec_add(xvec, x0vec, tmpvec, N);
 
 #ifdef EBUG
         normal_log("GCR convergence");
@@ -252,11 +234,7 @@ int GMRES_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const
 
     solve_Hye(hmtx, yvec, evec, i_restart-1, N);
 
-    /* vec_init(tmpvec, 0.0, N); */
-    for(i=0;i<N;i++)
-    {
-      tmpvec[i]=0.0;
-    }
+    vec_init(tmpvec, 0.0, N);
 
     for(i=0;i<i_restart;i++)
     {
@@ -266,18 +244,14 @@ int GMRES_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const
       }
     }
 
-    /* vec_add(x0vec, tmpvec, xvec, N); */
-    for(i=0;i<N;i++)
-    {
-      xvec[i] = x0vec[i] + tmpvec[i];
-    }
-
+    vec_add(xvec, x0vec, tmpvec, N);
+    
     for(i=0;i<N;i++)
     {
       x0vec[i]=xvec[i];
     }
   }
-  if(!isinner)
+  if(!f_isinner)
   {
     file_print(p_x, xvec, N);
     fclose(p_x);
@@ -285,12 +259,14 @@ int GMRES_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const
     printf("|b-ax|2/|b|2=%.1f\n", t_error);
     printf("loop=%d\n", count+1);
   }
-  if(isinner && para->f_verbose)
+  if(f_isinner && f_verbose)
   {
     printf("Inner %d %.12e\n", count+1, error);
   }
-  if(para->f_cuda != true)
+  if(f_cuda)
   {
+    error_log("not done yet");
+  }else{
     free_1d(rvec);
     free_1d(axvec);
     free_1d(evec);
@@ -307,7 +283,7 @@ int GMRES_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const
     free_1d(tmpvec);
     free_1d(x_0);
   }
-  if(isinner)
+  if(f_isinner)
   {
     fclose(p_x);
     fclose(p_his);

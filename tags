@@ -6,20 +6,20 @@
 !_TAG_PROGRAM_VERSION	5.8	//
 BLAS_H_INCLUDED__	blas.h	2;"	d
 CG	share.h	/^  CG,$/;"	e	enum:SolverName
-CG_CRS	CRS/cg.c	/^int CG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool isinner)$/;"	f
+CG_CRS	CRS/cg.c	/^int CG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)$/;"	f
 CG_H_INCLUDED__	CRS/cg.h	2;"	d
 CG_Init	CRS/cg.c	/^void CG_Init(double *rvec, double *pvec, double *Av, double *xvec, const int N)$/;"	f
 CR	share.h	/^  CR,$/;"	e	enum:SolverName
-CR_CRS	CRS/cr.c	/^int CR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool isinner)$/;"	f
+CR_CRS	CRS/cr.c	/^int CR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)$/;"	f
 CR_H_INCLUDED__	CRS/cr.h	2;"	d
 CR_init	CRS/cr.c	/^void CR_init(double *rvec, double *pvec, double *qvec, double *svec, double *xvec, const int N)$/;"	f
 EBUG	share.h	4;"	d
 GCR	share.h	/^  GCR,$/;"	e	enum:SolverName
-GCR_CRS	CRS/gcr.c	/^int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool isinner)$/;"	f
+GCR_CRS	CRS/gcr.c	/^int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)$/;"	f
 GCR_H_INCLUDED__	CRS/gcr.h	2;"	d
 GCR_init	CRS/gcr.c	/^void GCR_init(double *rvec, double *Av, double *x_0, double *qq, double **qvec, double **pvec, const int N, const int restart)$/;"	f
 GMRES	share.h	/^  GMRES,$/;"	e	enum:SolverName
-GMRES_CRS	CRS/gmres.c	/^int GMRES_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool isinner)$/;"	f
+GMRES_CRS	CRS/gmres.c	/^int GMRES_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)$/;"	f
 GMRES_H_INCLUDED__	CRS/gmres.h	2;"	d
 GMRES_init	CRS/gmres.c	/^void GMRES_init(double *rvec, double *axvec, double *evec, double *vvec, double *vmtx, double *hmtx, double *yvec, double *wvec, double *avvec, double *hvvec, double *cvec, double *svec, double *x0vec, double *tmpvec, double *x_0, double *xvec, const int N, const int restart)$/;"	f
 IO_H_INCLUDED__	io.h	2;"	d
