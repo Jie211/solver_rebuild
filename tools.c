@@ -170,7 +170,7 @@ void vec_init(double *v, const double val, const int size)
   }
 }
 
-void vec_init_2(double *v, const double val, const int sizex, const int sizey)
+void vec_init_2(double **v, const double val, const int sizex, const int sizey)
 {
   int i, j;
   for(i=0;i<sizey;i++)
@@ -200,7 +200,7 @@ void file_print(FILE *fp, double *vec, const int N)
   }
 }
 
-void vec_add(double *out, double *x, double *y, const int N)
+void vec_add_d(double *out, double *x, double *y, const int N)
 {
   int i;
   for(i=0;i<N;i++)

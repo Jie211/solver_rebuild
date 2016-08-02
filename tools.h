@@ -39,14 +39,14 @@ FILE *file_init(const char *name, const char *mode);
 
 void vec_init(double *v, const double val, const int size);
 
-void vec_init_2(double *v, const double val, const int sizex, const int sizey);
+void vec_init_2(double **v, const double val, const int sizex, const int sizey);
 
 void vec_copy(double *t, double *f, const int size);
 
 void file_print(FILE *fp, double *vec, const int N);
 
 double error_d_CRS(double *val, const int *col, const int *ptr, const double *b, const double *x_new, const double *x_0, const int N);
-void vec_add(double *out, double *x, double *y, const int N);
+void vec_add_d(double *out, double *x, double *y, const int N);
 
 #endif //TOOLS_H_INCLUDED__
 

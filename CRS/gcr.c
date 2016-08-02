@@ -5,7 +5,7 @@ void GCR_init(double *rvec, double *Av, double *x_0, double *qq, double **qvec, 
   vec_init(rvec, 0.0, N);
   vec_init(Av, 0.0, N);
   vec_init(x_0, 0.0, N);
-  vec_init(qq, 0.0, N);
+  vec_init(qq, 0.0,restart);
   vec_init_2(qvec, 0.0, N, restart);
   vec_init_2(pvec, 0.0, N, restart);
 }
@@ -18,8 +18,7 @@ int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const s
   double *rvec, *Av, *x_0, *qq;
   double **qvec, **pvec;
   double alpha, beta, rnorm, bnorm;
-  bool flag = false;
-  bool out = false;
+  bool out_flag = false;
   double error = 0.0;
 
   double t_error = 0.0;
@@ -51,7 +50,7 @@ int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const s
     rvec = malloc_1d(N);
     Av = malloc_1d(N);
     x_0 = malloc_1d(N);
-    qq = malloc_1d(N);
+    qq = malloc_1d(i_restart);
     qvec = malloc_2d(N, i_restart);
     pvec = malloc_2d(N, i_restart);
   }
@@ -61,7 +60,7 @@ int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const s
   //
 
   //init
-  GCR_init(rvec, Av, x_0, qq, qvec, pvec, N, i_restart);
+  GCR_init(rvec, Av, xvec, qq, qvec, pvec, N, i_restart);
 
   if(para->isVP == true && isinner == true)
   {
@@ -118,12 +117,12 @@ int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const s
         normal_log("GCR convergence");
 #endif
         exit_flag = 1;
-        out=true;
+        out_flag=true;
         break;
       }else if(loop>=i_max)
       {
         exit_flag = 2;
-        out=true;
+        out_flag=true;
         break;
       }
       loop++;
@@ -153,7 +152,6 @@ int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const s
 
       //x=alpha*pvec[k]+xvec
       scalar_xpy_d(xvec, alpha, pvec[kloop], xvec, N);
-
       if(kloop == i_restart-1)
       {
         break;
@@ -190,12 +188,11 @@ int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const s
         scalar_xpy_d(qvec[kloop+1], beta, qvec[iloop], qvec[kloop+1], N);
       }
       //p[k]=z+p[k]
-      vec_add(pvec[kloop+1], rvec, pvec[kloop+1], N);
+      vec_add_d(pvec[kloop+1], rvec, pvec[kloop+1], N);
       //q[k]=Az+q[k]
-      vec_add(qvec[kloop+1], Av, qvec[kloop+1], N);
-
+      vec_add_d(qvec[kloop+1], Av, qvec[kloop+1], N);
     }
-    if(out)
+    if(out_flag)
     {
       break;
     }

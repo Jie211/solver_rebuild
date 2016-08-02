@@ -4,32 +4,32 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
-BLAS_H_INCLUDED__	blas.h	/^#define BLAS_H_INCLUDED__$/;"	d
+BLAS_H_INCLUDED__	blas.h	2;"	d
 CG	share.h	/^  CG,$/;"	e	enum:SolverName
 CG_CRS	CRS/cg.c	/^int CG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool isinner)$/;"	f
-CG_H_INCLUDED__	CRS/cg.h	/^#define CG_H_INCLUDED__$/;"	d
+CG_H_INCLUDED__	CRS/cg.h	2;"	d
 CG_Init	CRS/cg.c	/^void CG_Init(double *rvec, double *pvec, double *Av, double *xvec, const int N)$/;"	f
 CR	share.h	/^  CR,$/;"	e	enum:SolverName
 CR_CRS	CRS/cr.c	/^int CR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool isinner)$/;"	f
-CR_H_INCLUDED__	CRS/cr.h	/^#define CR_H_INCLUDED__$/;"	d
+CR_H_INCLUDED__	CRS/cr.h	2;"	d
 CR_init	CRS/cr.c	/^void CR_init(double *rvec, double *pvec, double *qvec, double *svec, double *xvec, const int N)$/;"	f
-EBUG	share.h	/^#define EBUG$/;"	d
+EBUG	share.h	4;"	d
 GCR	share.h	/^  GCR,$/;"	e	enum:SolverName
 GCR_CRS	CRS/gcr.c	/^int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool isinner)$/;"	f
-GCR_H_INCLUDED__	CRS/gcr.h	/^#define GCR_H_INCLUDED__$/;"	d
+GCR_H_INCLUDED__	CRS/gcr.h	2;"	d
 GCR_init	CRS/gcr.c	/^void GCR_init(double *rvec, double *Av, double *x_0, double *qq, double **qvec, double **pvec, const int N, const int restart)$/;"	f
 GMRES	share.h	/^  GMRES,$/;"	e	enum:SolverName
-IO_H_INCLUDED__	io.h	/^#define IO_H_INCLUDED__$/;"	d
+IO_H_INCLUDED__	io.h	2;"	d
 KSKIPCG	share.h	/^  KSKIPCG,$/;"	e	enum:SolverName
 KSKIPCR	share.h	/^  KSKIPCR,$/;"	e	enum:SolverName
 MV_mult_CSR	blas.c	/^void MV_mult_CSR(double *out, const double *val, const int *col, const int *ptr, const double *vec, const int N)$/;"	f
 NONE	share.h	/^  NONE$/;"	e	enum:SolverName
 Parameter	share.h	/^struct Parameter{$/;"	s
-SELECTER_H_INCLUDED__	selecter.h	/^#define SELECTER_H_INCLUDED__$/;"	d
-SHARE_H_INCLUDED__	share.h	/^#define SHARE_H_INCLUDED__$/;"	d
-START_H_INCLUDED__	start.h	/^#define START_H_INCLUDED__$/;"	d
+SELECTER_H_INCLUDED__	selecter.h	2;"	d
+SHARE_H_INCLUDED__	share.h	2;"	d
+START_H_INCLUDED__	start.h	2;"	d
 SolverName	share.h	/^enum SolverName{$/;"	g
-TOOLS_H_INCLUDED__	tools.h	/^#define TOOLS_H_INCLUDED__$/;"	d
+TOOLS_H_INCLUDED__	tools.h	2;"	d
 VPCG	share.h	/^  VPCG,$/;"	e	enum:SolverName
 VPCR	share.h	/^  VPCR,$/;"	e	enum:SolverName
 VPGCR	share.h	/^  VPGCR,$/;"	e	enum:SolverName
@@ -86,9 +86,9 @@ scalar_d	blas.c	/^void scalar_d(double *out, const double a, const double *x, co
 scalar_xpy_d	blas.c	/^void scalar_xpy_d(double *out, const double a, const double *x, const double *y, const int N)$/;"	f
 set_openmp_thread	tools.c	/^int set_openmp_thread(const int thread)$/;"	f
 show_opt	io.c	/^void show_opt(struct Parameter *para)$/;"	f
-vec_add	tools.c	/^void vec_add(double *out, double *x, double *y, const int N)$/;"	f
+vec_add_d	tools.c	/^void vec_add_d(double *out, double *x, double *y, const int N)$/;"	f
 vec_copy	tools.c	/^void vec_copy(double *t, double *f, const int size)$/;"	f
 vec_init	tools.c	/^void vec_init(double *v, const double val, const int size)$/;"	f
-vec_init_2	tools.c	/^void vec_init_2(double *v, const double val, const int sizex, const int sizey)$/;"	f
+vec_init_2	tools.c	/^void vec_init_2(double **v, const double val, const int sizex, const int sizey)$/;"	f
 vec_sub	blas.c	/^void vec_sub(double *out, const double *x, const double *y, const int N)$/;"	f
 warning_log	tools.c	/^void warning_log(char *output)$/;"	f
