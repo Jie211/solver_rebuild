@@ -11,6 +11,7 @@
 #include "./CRS/cr.h"
 #include "./CRS/gcr.h"
 #include "./CRS/gmres.h"
+#include "./CRS/kskipcg.h"
 
 int outer_selecter(struct Parameter *para, double *bvec, double *xvec, double *val, int *col, int *ptr, const int N, const int NNZ);
 

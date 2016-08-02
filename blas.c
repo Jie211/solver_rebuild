@@ -142,3 +142,68 @@ void solve_Hye(double *h, double *y, double *e, const int n, const int size)
     y[i] = (e[i] - tmp)/h[i*size+i];
   }
 }
+
+void cal_arap_kskipcg_d(double **Ar, double **Ap, double *val, int *col, int *ptr, double *rvec, double *pvec, const int N, const int kskip)
+{
+  int i, j, ii;
+  double tmp1=0.0;
+  double tmp2=0.0;
+#pragma omp parallel for private(j) reduction(+:tmp1, tmp2) schedule(static) firstprivate(Ar, Ap, val, pvec, rvec) lastprivate(Ar, Ap)
+  for(i=0;i<N;i++){
+    tmp1=0.0;
+    tmp2=0.0;
+    for(j=ptr[i];j<ptr[i+1];j++){
+      tmp1 += val[j]*rvec[col[j]];
+      tmp2 += val[j]*pvec[col[j]];
+    }
+    Ar[0][i]=tmp1;
+    Ap[0][i]=tmp2;
+  }
+  for(ii=1;ii<2*kskip+2;ii++){
+#pragma omp parallel for private(i, j) reduction(+:tmp1, tmp2) schedule(static) firstprivate(Ar, Ap, val) lastprivate(Ar, Ap)
+    for(i=0;i<N;i++){
+      tmp1=0.0;
+      tmp2=0.0;
+      for(j=ptr[i];j<ptr[i+1];j++){
+        if(ii<2*kskip){
+          tmp1 += val[j]*Ar[(ii-1)][col[j]];
+        }
+        tmp2 += val[j]*Ap[(ii-1)][col[j]];
+      }
+      if(ii<2*kskip){
+        Ar[ii][i]=tmp1;
+      }
+      Ap[ii][i]=tmp2;
+    }
+  }
+}
+
+void cal_deltaetazeta_kskipcg_d(double *delta, double *eta, double *zeta, double **Ar, double **Ap, double *rvec, double *pvec, const int N, const int kskip)
+{
+  int i, j;
+  double tmp1=0.0;
+  double tmp2=0.0;
+  double tmp3=0.0;
+#pragma omp parallel for private(j) reduction(+:tmp1, tmp2, tmp3) schedule(static) firstprivate(delta, eta, zeta, Ar, rvec, Ap, pvec) lastprivate(delta, eta, zeta)
+  for(i=0;i<2*kskip+2;i++){
+    tmp1=0.0;
+    tmp2=0.0;
+    tmp3=0.0;
+    for(j=0;j<N;j++){
+      if(i<2*kskip){
+        tmp1 += rvec[j]*Ar[i][j];
+      }
+      if(i<2*kskip+1){
+        tmp2 += rvec[j]*Ap[i][j];
+      }
+      tmp3 += pvec[j]*Ap[i][j];
+    }
+    if(i<2*kskip){
+      delta[i]=tmp1;
+    }
+    if(i<2*kskip+1){
+      eta[i]=tmp2;
+    }
+    zeta[i]=tmp3;
+  }
+}

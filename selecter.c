@@ -19,6 +19,9 @@ int outer_selecter(struct Parameter *para, double *bvec, double *xvec, double *v
     }else if(para->c_outer_solver == GMRES)
     {
       handle = GMRES_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
+    }else if(para->c_outer_solver == KSKIPCG)
+    {
+      handle = KSKIPCG_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
     }
     else{
       error_log("not define now");

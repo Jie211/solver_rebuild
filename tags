@@ -24,6 +24,9 @@ GMRES_H_INCLUDED__	CRS/gmres.h	2;"	d
 GMRES_init	CRS/gmres.c	/^void GMRES_init(double *rvec, double *axvec, double *evec, double *vvec, double *vmtx, double *hmtx, double *yvec, double *wvec, double *avvec, double *hvvec, double *cvec, double *svec, double *x0vec, double *tmpvec, double *x_0, double *xvec, const int N, const int restart)$/;"	f
 IO_H_INCLUDED__	io.h	2;"	d
 KSKIPCG	share.h	/^  KSKIPCG,$/;"	e	enum:SolverName
+KSKIPCG_CRS	CRS/kskipcg.c	/^int KSKIPCG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)$/;"	f
+KSKIPCG_H_INCLUDED__	CRS/kskipcg.h	2;"	d
+KSKIPCG_init	CRS/kskipcg.c	/^void KSKIPCG_init(double **Ap, double **Ar, double *delta, double *eta, double *zeta, double *rvec, double *pvec, double *Av, double *xvec, const int N, const int kskip)$/;"	f
 KSKIPCR	share.h	/^  KSKIPCR,$/;"	e	enum:SolverName
 MV_mult_CSR	blas.c	/^void MV_mult_CSR(double *out, const double *val, const int *col, const int *ptr, const double *vec, const int N)$/;"	f
 NONE	share.h	/^  NONE$/;"	e	enum:SolverName
@@ -41,6 +44,8 @@ bx_path	share.h	/^  char bx_path[128];$/;"	m	struct:Parameter
 c_inner_solver	share.h	/^  enum SolverName c_inner_solver;$/;"	m	struct:Parameter	typeref:enum:Parameter::SolverName
 c_matrix	share.h	/^  char c_matrix[128];$/;"	m	struct:Parameter
 c_outer_solver	share.h	/^  enum SolverName c_outer_solver;$/;"	m	struct:Parameter	typeref:enum:Parameter::SolverName
+cal_arap_kskipcg_d	blas.c	/^void cal_arap_kskipcg_d(double **Ar, double **Ap, double *val, int *col, int *ptr, double *rvec, double *pvec, const int N, const int kskip)$/;"	f
+cal_deltaetazeta_kskipcg_d	blas.c	/^void cal_deltaetazeta_kskipcg_d(double *delta, double *eta, double *zeta, double **Ar, double **Ap, double *rvec, double *pvec, const int N, const int kskip)$/;"	f
 check_opt	io.c	/^int check_opt(struct Parameter *para)$/;"	f
 check_solver	io.c	/^int check_solver(char *optarg, enum SolverName *solver)$/;"	f
 col_path	share.h	/^  char col_path[128];$/;"	m	struct:Parameter
