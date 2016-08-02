@@ -19,6 +19,9 @@ GCR_CRS	CRS/gcr.c	/^int GCR_CRS(double *val, int *col, int *ptr, double *bvec, d
 GCR_H_INCLUDED__	CRS/gcr.h	2;"	d
 GCR_init	CRS/gcr.c	/^void GCR_init(double *rvec, double *Av, double *x_0, double *qq, double **qvec, double **pvec, const int N, const int restart)$/;"	f
 GMRES	share.h	/^  GMRES,$/;"	e	enum:SolverName
+GMRES_CRS	CRS/gmres.c	/^int GMRES_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool isinner)$/;"	f
+GMRES_H_INCLUDED__	CRS/gmres.h	2;"	d
+GMRES_init	CRS/gmres.c	/^void GMRES_init(double *rvec, double *axvec, double *evec, double *vvec, double *vmtx, double *hmtx, double *yvec, double *wvec, double *avvec, double *hvvec, double *cvec, double *svec, double *x0vec, double *tmpvec, double *x_0, double *xvec, const int N, const int restart)$/;"	f
 IO_H_INCLUDED__	io.h	2;"	d
 KSKIPCG	share.h	/^  KSKIPCG,$/;"	e	enum:SolverName
 KSKIPCR	share.h	/^  KSKIPCR,$/;"	e	enum:SolverName
@@ -86,6 +89,8 @@ scalar_d	blas.c	/^void scalar_d(double *out, const double a, const double *x, co
 scalar_xpy_d	blas.c	/^void scalar_xpy_d(double *out, const double a, const double *x, const double *y, const int N)$/;"	f
 set_openmp_thread	tools.c	/^int set_openmp_thread(const int thread)$/;"	f
 show_opt	io.c	/^void show_opt(struct Parameter *para)$/;"	f
+solve_Hye	blas.c	/^void solve_Hye(double *h, double *y, double *e, const int n, const int size)$/;"	f
+vec_add	blas.c	/^void vec_add(double *out, const double *x, const double *y, const int N)$/;"	f
 vec_add_d	tools.c	/^void vec_add_d(double *out, double *x, double *y, const int N)$/;"	f
 vec_copy	tools.c	/^void vec_copy(double *t, double *f, const int size)$/;"	f
 vec_init	tools.c	/^void vec_init(double *v, const double val, const int size)$/;"	f

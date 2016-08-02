@@ -12,12 +12,15 @@ double norm_2_d(double *v, const int N);
 void MV_mult_CSR(double *out, const double *val, const int *col, const int *ptr, const double *vec, const int N);
 
 void vec_sub(double *out, const double *x, const double *y, const int N);
+void vec_add(double *out, const double *x, const double *y, const int N);
 double dot_d(const double *x, const double *y, const int N);
 
 void scalar_d(double *out, const double a, const double *x, const int N);
 void scalar_xpy_d(double *out, const double a, const double *x, const double *y, const int N);
 
 double error_d_CRS(double *val, const int *col, const int *ptr, const double *b, const double *x_new, const double *x_0, const int N);
+
+void solve_Hye(double *h, double *y, double *e, const int n, const int size);
 
 #endif //BLAS_H_INCLUDED__
 

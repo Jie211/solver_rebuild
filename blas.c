@@ -45,6 +45,15 @@ void vec_sub(double *out, const double *x, const double *y, const int N)
   }
 }
 
+void vec_add(double *out, const double *x, const double *y, const int N)
+{
+  int i;
+  for(i=0;i<N;i++)
+  {
+    out[i] = x[i] + y[i];
+  }
+}
+
 double dot_d(const double *x, const double *y, const int N)
 {
   int i;
@@ -113,4 +122,23 @@ double error_d_CRS(double *val, const int *col, const int *ptr, const double *b,
   free(Ax_0);
 
   return tmp;
+}
+
+void solve_Hye(double *h, double *y, double *e, const int n, const int size)
+{
+  int i, j;
+  double tmp;
+  for(i=0;i<n;i++)
+  {
+    y[i] = 0.0;
+  }
+  for(i=n-1;i>=0;i--)
+  {
+    tmp = 0.0;
+    for(j=i+1;j<n;j++)
+    {
+      tmp += y[j] * h[i*size+j];
+    }
+    y[i] = (e[i] - tmp)/h[i*size+i];
+  }
 }
