@@ -1,2 +1,2 @@
 all:
-	gcc *.c ./CRS/*.c -Wall -fopenmp -lm -g
+	gcc-5 *.c ./CRS/*.c -Wall -fopenmp -lm -g

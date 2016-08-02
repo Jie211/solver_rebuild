@@ -129,7 +129,7 @@ int error_handle(int error_code, char *msg)
   }
 }
 
-int set_openmp_thread(int thread)
+int set_openmp_thread(const int thread)
 {
   int error;
   char env[128];
@@ -161,7 +161,7 @@ FILE *file_init(const char *name, const char *mode)
   return (tmp);
 }
 
-void vec_init(double *v, double val, int size)
+void vec_init(double *v, const double val, const int size)
 {
   int i;
   for(i=0;i<size;i++)
@@ -170,7 +170,19 @@ void vec_init(double *v, double val, int size)
   }
 }
 
-void vec_copy(double *t, double *f, int size)
+void vec_init_2(double *v, const double val, const int sizex, const int sizey)
+{
+  int i, j;
+  for(i=0;i<sizey;i++)
+  {
+    for(j=0;j<sizex;j++)
+    {
+      v[i][j] = val;
+    }
+  }
+}
+
+void vec_copy(double *t, double *f, const int size)
 {
   int i;
   for(i=0;i<size;i++)
@@ -179,11 +191,20 @@ void vec_copy(double *t, double *f, int size)
   }
 }
 
-void file_print(FILE *fp, double *vec, int N)
+void file_print(FILE *fp, double *vec, const int N)
 {
   int i;
   for(i=0;i<N;i++)
   {
     fprintf(fp, "%d %.12e\n", i, vec[i]);
+  }
+}
+
+void vec_add(double *out, double *x, double *y, const int N)
+{
+  int i;
+  for(i=0;i<N;i++)
+  {
+    out[i] = x[i] + y[i];
   }
 }
