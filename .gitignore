@@ -2,6 +2,7 @@
 /tags
 /output/*
 *.swap
+CRS/*.swp
 *~
 .DS_Store
 *.o
