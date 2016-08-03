@@ -18,18 +18,8 @@ BUILD_DIR = Build
 OBJS=$(addprefix $(BUILD_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
 DEPS=$(patsubst %.o,%.d, $(OBJS))
 
-UNAME := $(shell uname)
-ifeq ($(UNAME), Linux)
-	CC = gcc
-endif
-ifeq ($(UNAME), Darwin)
-	CC = gcc-6
-endif
-ifeq ($(UNAME), Windows_NT)
-	exit 0
-endif
-
-TARGET = Solver
+CC = gcc-6
+TARGET = Test
 CFLAGS += $(addprefix -I,$(INC_DIR)) -fopenmp -Wall
 LDFLAGS +=
 
@@ -44,6 +34,12 @@ $(TARGET) : $(OBJS)
 $(BUILD_DIR)/%.o : %.c
 	mkdir -p $(dir $@); \
 		$(CC) -c $(CFLAGS) -o $@ $<
+
+$(BUILD_DIR)/%.d : %.c
+	mkdir -p $(dir $@); \
+		$(CC) -MM $(CFLAGS) $< \
+		| sed 's/$(notdir $*).o/$(subst /,\/,$(patsubst %.d,%.o,$@) $@)/' > $@ ; \
+		[ -s $@ ] || rm -f $@
 
 clean:
 	rm -rf $(BUILD_DIR) $(TARGET)

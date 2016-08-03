@@ -1,6 +1,7 @@
-/a.out
+/Solver
 /tags
 /output/*
+/Build
 *.swap
 CRS/*.swp
 *~

@@ -4,38 +4,47 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
-BLAS_H_INCLUDED__	blas.h	2;"	d
+BLAS_H_INCLUDED__	blas.h	/^#define BLAS_H_INCLUDED__$/;"	d
+BUILD_DIR	Makefile	/^BUILD_DIR = Build$/;"	m
+CC	Makefile	/^	CC = gcc$/;"	m
+CC	Makefile	/^	CC = gcc-6$/;"	m
 CG	share.h	/^  CG,$/;"	e	enum:SolverName
 CG_CRS	CRS/cg.c	/^int CG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)$/;"	f
-CG_H_INCLUDED__	CRS/cg.h	2;"	d
+CG_H_INCLUDED__	CRS/cg.h	/^#define CG_H_INCLUDED__$/;"	d
 CG_Init	CRS/cg.c	/^void CG_Init(double *rvec, double *pvec, double *Av, double *xvec, const int N)$/;"	f
 CR	share.h	/^  CR,$/;"	e	enum:SolverName
 CR_CRS	CRS/cr.c	/^int CR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)$/;"	f
-CR_H_INCLUDED__	CRS/cr.h	2;"	d
+CR_H_INCLUDED__	CRS/cr.h	/^#define CR_H_INCLUDED__$/;"	d
 CR_init	CRS/cr.c	/^void CR_init(double *rvec, double *pvec, double *qvec, double *svec, double *xvec, const int N)$/;"	f
-EBUG	share.h	4;"	d
+DEPS	Makefile	/^DEPS=$(patsubst %.o,%.d, $(OBJS))$/;"	m
+EBUG	share.h	/^#define EBUG$/;"	d
 GCR	share.h	/^  GCR,$/;"	e	enum:SolverName
 GCR_CRS	CRS/gcr.c	/^int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)$/;"	f
-GCR_H_INCLUDED__	CRS/gcr.h	2;"	d
+GCR_H_INCLUDED__	CRS/gcr.h	/^#define GCR_H_INCLUDED__$/;"	d
 GCR_init	CRS/gcr.c	/^void GCR_init(double *rvec, double *Av, double *x_0, double *qq, double **qvec, double **pvec, const int N, const int restart)$/;"	f
 GMRES	share.h	/^  GMRES,$/;"	e	enum:SolverName
 GMRES_CRS	CRS/gmres.c	/^int GMRES_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)$/;"	f
-GMRES_H_INCLUDED__	CRS/gmres.h	2;"	d
+GMRES_H_INCLUDED__	CRS/gmres.h	/^#define GMRES_H_INCLUDED__$/;"	d
 GMRES_init	CRS/gmres.c	/^void GMRES_init(double *rvec, double *axvec, double *evec, double *vvec, double *vmtx, double *hmtx, double *yvec, double *wvec, double *avvec, double *hvvec, double *cvec, double *svec, double *x0vec, double *tmpvec, double *x_0, double *xvec, const int N, const int restart)$/;"	f
-IO_H_INCLUDED__	io.h	2;"	d
+INC_DIR	Makefile	/^INC_DIR = .$/;"	m
+IO_H_INCLUDED__	io.h	/^#define IO_H_INCLUDED__$/;"	d
 KSKIPCG	share.h	/^  KSKIPCG,$/;"	e	enum:SolverName
 KSKIPCG_CRS	CRS/kskipcg.c	/^int KSKIPCG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)$/;"	f
-KSKIPCG_H_INCLUDED__	CRS/kskipcg.h	2;"	d
+KSKIPCG_H_INCLUDED__	CRS/kskipcg.h	/^#define KSKIPCG_H_INCLUDED__$/;"	d
 KSKIPCG_init	CRS/kskipcg.c	/^void KSKIPCG_init(double **Ap, double **Ar, double *delta, double *eta, double *zeta, double *rvec, double *pvec, double *Av, double *xvec, const int N, const int kskip)$/;"	f
 KSKIPCR	share.h	/^  KSKIPCR,$/;"	e	enum:SolverName
 MV_mult_CSR	blas.c	/^void MV_mult_CSR(double *out, const double *val, const int *col, const int *ptr, const double *vec, const int N)$/;"	f
 NONE	share.h	/^  NONE$/;"	e	enum:SolverName
+OBJS	Makefile	/^OBJS=$(addprefix $(BUILD_DIR)\/,$(patsubst %.c,%.o,$(SRCS)))$/;"	m
 Parameter	share.h	/^struct Parameter{$/;"	s
-SELECTER_H_INCLUDED__	selecter.h	2;"	d
-SHARE_H_INCLUDED__	share.h	2;"	d
-START_H_INCLUDED__	start.h	2;"	d
+SELECTER_H_INCLUDED__	selecter.h	/^#define SELECTER_H_INCLUDED__$/;"	d
+SHARE_H_INCLUDED__	share.h	/^#define SHARE_H_INCLUDED__$/;"	d
+SRCS	Makefile	/^SRCS = \\$/;"	m
+START_H_INCLUDED__	start.h	/^#define START_H_INCLUDED__$/;"	d
 SolverName	share.h	/^enum SolverName{$/;"	g
-TOOLS_H_INCLUDED__	tools.h	2;"	d
+TARGET	Makefile	/^TARGET = Solver$/;"	m
+TOOLS_H_INCLUDED__	tools.h	/^#define TOOLS_H_INCLUDED__$/;"	d
+UNAME	Makefile	/^UNAME := $(shell uname)$/;"	m
 VPCG	share.h	/^  VPCG,$/;"	e	enum:SolverName
 VPCR	share.h	/^  VPCR,$/;"	e	enum:SolverName
 VPGCR	share.h	/^  VPGCR,$/;"	e	enum:SolverName
