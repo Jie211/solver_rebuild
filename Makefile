@@ -22,6 +22,7 @@ DEPS=$(patsubst %.o,%.d, $(OBJS))
 UNAME := $(shell uname)
 ifeq ($(UNAME), Linux)
 	CC = gcc
+	CFLAGS += -lm
 endif
 ifeq ($(UNAME), Darwin)
 	CC = gcc-6
