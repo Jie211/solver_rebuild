@@ -33,6 +33,9 @@ KSKIPCG_CRS	CRS/kskipcg.c	/^int KSKIPCG_CRS(double *val, int *col, int *ptr, dou
 KSKIPCG_H_INCLUDED__	CRS/kskipcg.h	/^#define KSKIPCG_H_INCLUDED__$/;"	d
 KSKIPCG_init	CRS/kskipcg.c	/^void KSKIPCG_init(double **Ap, double **Ar, double *delta, double *eta, double *zeta, double *rvec, double *pvec, double *Av, double *xvec, const int N, const int kskip)$/;"	f
 KSKIPCR	share.h	/^  KSKIPCR,$/;"	e	enum:SolverName
+KSKIPCR_CRS	CRS/kskipcr.c	/^int KSKIPCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)$/;"	f
+KSKIPCR_H_INCLUDED__	CRS/kskipcr.h	/^#define KSKIPCR_H_INCLUDED__$/;"	d
+KSKIPCR_init	CRS/kskipcr.c	/^void KSKIPCR_init(double *Ar, double *Ap, double *delta, double *eta, double *zeta, double *rvec, double *pvec, double *Av, double *xvec, const int N, const int kskip)$/;"	f
 MV_mult_CSR	blas.c	/^void MV_mult_CSR(double *out, const double *val, const int *col, const int *ptr, const double *vec, const int N)$/;"	f
 NONE	share.h	/^  NONE$/;"	e	enum:SolverName
 OBJS	Makefile	/^OBJS=$(addprefix $(BUILD_DIR)\/,$(patsubst %.c,%.o,$(SRCS)))$/;"	m
@@ -54,7 +57,9 @@ c_inner_solver	share.h	/^  enum SolverName c_inner_solver;$/;"	m	struct:Paramete
 c_matrix	share.h	/^  char c_matrix[128];$/;"	m	struct:Parameter
 c_outer_solver	share.h	/^  enum SolverName c_outer_solver;$/;"	m	struct:Parameter	typeref:enum:Parameter::SolverName
 cal_arap_kskipcg_d	blas.c	/^void cal_arap_kskipcg_d(double **Ar, double **Ap, double *val, int *col, int *ptr, double *rvec, double *pvec, const int N, const int kskip)$/;"	f
+cal_arap_kskipcr_d	blas.c	/^void cal_arap_kskipcr_d(double *Ar, double *Ap, double *val, int *col, int *ptr, double *rvec, double *pvec, const int N, const int kskip)$/;"	f
 cal_deltaetazeta_kskipcg_d	blas.c	/^void cal_deltaetazeta_kskipcg_d(double *delta, double *eta, double *zeta, double **Ar, double **Ap, double *rvec, double *pvec, const int N, const int kskip)$/;"	f
+cal_deltaetazeta_kskipcr_d	blas.c	/^void cal_deltaetazeta_kskipcr_d(double *delta, double *eta, double *zeta, double *Ar, double *Ap, double *rvec, const int N, const int kskip)$/;"	f
 check_opt	io.c	/^int check_opt(struct Parameter *para)$/;"	f
 check_solver	io.c	/^int check_solver(char *optarg, enum SolverName *solver)$/;"	f
 col_path	share.h	/^  char col_path[128];$/;"	m	struct:Parameter

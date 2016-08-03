@@ -29,5 +29,9 @@ void cal_arap_kskipcg_d(double **Ar, double **Ap, double *val, int *col, int *pt
 
 void cal_deltaetazeta_kskipcg_d(double *delta, double *eta, double *zeta, double **Ar, double **Ap, double *rvec, double *pvec, const int N, const int kskip);
 
+void cal_arap_kskipcr_d(double *Ar, double *Ap, double *val, int *col, int *ptr, double *rvec, double *pvec, const int N, const int kskip);
+
+void cal_deltaetazeta_kskipcr_d(double *delta, double *eta, double *zeta, double *Ar, double *Ap, double *rvec, const int N, const int kskip);
+
 #endif //BLAS_H_INCLUDED__
 
