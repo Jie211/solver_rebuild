@@ -102,9 +102,9 @@ int CG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const st
     }
     if(error <= d_eps)
     {
-#ifdef EBUG
-      normal_log("CG convergence");
-#endif
+/* #ifdef EBUG */
+/*       normal_log("CG convergence"); */
+/* #endif */
       exit_flag = 1;
       break;
     }
@@ -153,9 +153,13 @@ int CG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const st
   {
     file_print(p_x, xvec, N);
     fclose(p_x);
+    fclose(p_his);
     t_error = error_d_CRS(val, col, ptr, bvec, xvec, x_0, N);
     printf("|b-ax|2/|b|2=%.1f\n", t_error);
     printf("loop=%d\n", loop+1);
+  }else{
+    /* fclose(p_x); */
+    /* fclose(p_his); */
   }
   if(f_isinner && f_verbose)
   {
@@ -171,11 +175,6 @@ int CG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const st
     free_1d(Av);
     free_1d(x_0);
   }
-
-  if(f_isinner)
-  {
-    fclose(p_x);
-    fclose(p_his);
-  }
+  
   return exit_flag;
 }

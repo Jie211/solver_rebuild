@@ -14,6 +14,7 @@ int VPCG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, struct
   int loop;
 
   double *rvec, *pvec, *Av, *x_0, dot, error=0.0;
+  double *zvec;
   double alpha, beta, bnorm, rnorm;
   double rz, rz2;
 
@@ -30,13 +31,12 @@ int VPCG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, struct
   FILE *p_x=NULL, *p_his=NULL;
 
   int get_error;
-  double *zvec;
 
-  if(!f_isinner)
-  {
-    p_x=file_init("./output/VPCG_x.txt", "w");
-    p_his=file_init("./output/VPCG_his.txt", "w");
-  }
+  /* if(!f_isinner) */
+  /* { */
+  p_x=file_init("./output/VPCG_x.txt", "w");
+  p_his=file_init("./output/VPCG_his.txt", "w");
+  /* } */
 
   if(f_cuda)
   {
@@ -90,12 +90,9 @@ int VPCG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, struct
 
   // Az=r
   get_error = inner_selecter(para, rvec, zvec, val, col, ptr, N, NNZ);
-  if(get_error==1)
+  if(get_error==-1)
   {
-    printf("inner good!");
-  }else
-  {
-    printf("inner bad!");
+    error_log("errror in vpcg - inner_selecter");
   }
 
   //p = z
@@ -113,14 +110,11 @@ int VPCG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, struct
   {
     rnorm = norm_2_d(rvec, N);
     error = rnorm / bnorm;
-    if(!f_isinner)
+    if(f_verbose)
     {
-      if(f_verbose)
-      {
-        printf("%d %.12e\n", loop+1, error);
-      }
-      fprintf(p_his, "%d %.12e\n", loop+1, error);
+      printf("Outer %d %.12e\n", loop+1, error);
     }
+    fprintf(p_his, "%d %.12e\n", loop+1, error);
     if(error <= d_eps)
     {
       exit_flag = 1;
@@ -154,12 +148,9 @@ int VPCG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, struct
     vec_init(zvec, 0.0, N);
 
     get_error = inner_selecter(para, rvec, zvec, val, col, ptr, N, NNZ);
-    if(get_error==1)
+    if(get_error==-1)
     {
-      printf("inner good!");
-    }else
-    {
-      printf("inner bad!");
+      error_log("errror in vpcg - inner_selecter");
     }
 
 
@@ -179,14 +170,12 @@ int VPCG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, struct
     scalar_xpy_d(pvec, beta, pvec, zvec, N);
   }
 
-  if(!f_isinner)
-  {
-    file_print(p_x, xvec, N);
-    fclose(p_x);
-    t_error = error_d_CRS(val, col, ptr, bvec, xvec, x_0, N);
-    printf("|b-ax|2/|b|2=%.1f\n", t_error);
-    printf("loop=%d\n", loop+1);
-  }
+  file_print(p_x, xvec, N);
+  fclose(p_x);
+  fclose(p_his);
+  t_error = error_d_CRS(val, col, ptr, bvec, xvec, x_0, N);
+  printf("|b-ax|2/|b|2=%.1f\n", t_error);
+  printf("loop=%d\n", loop+1);
   if(f_cuda)
   {
     error_log("not done yet");
@@ -195,12 +184,8 @@ int VPCG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, struct
     free_1d(pvec);
     free_1d(Av);
     free_1d(x_0);
+    free_1d(zvec);
   }
-
-  if(f_isinner)
-  {
-    fclose(p_x);
-    fclose(p_his);
-  }
+  
   return exit_flag;
 }

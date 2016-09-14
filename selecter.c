@@ -2,26 +2,26 @@
 
 int outer_selecter(struct Parameter *para, double *bvec, double *xvec, double *val, int *col, int *ptr, const int N, const int NNZ)
 {
-  int handle = 0;
+  int handle_out = 0;
   bool isinner = false;
 
-  if(para->isVP!=true)
+  if(para->isVP==false)
   {
     if(para->c_outer_solver == CG)
     {
-      handle = CG_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
+      handle_out = CG_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
     }else if(para->c_outer_solver == CR)
     {
-      handle = CR_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
+      handle_out = CR_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
     }else if(para->c_outer_solver == GCR)
     {
-      handle = GCR_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
+      handle_out = GCR_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
     }else if(para->c_outer_solver == GMRES)
     {
-      handle = GMRES_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
+      handle_out = GMRES_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
     }else if(para->c_outer_solver == KSKIPCG)
     {
-      handle = KSKIPCG_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
+      handle_out = KSKIPCG_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
     }else if(para->c_outer_solver == KSKIPCR)
     {
       /* handle = KSKIPCR_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner); */
@@ -35,7 +35,10 @@ int outer_selecter(struct Parameter *para, double *bvec, double *xvec, double *v
   {
     if(para->c_outer_solver == VPCG)
     {
-      handle = VPCG_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
+      handle_out = VPCG_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
+    }else if(para->c_outer_solver == VPCR)
+    {
+      handle_out = VPCR_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
     }else{
       error_log("not define now");
       return -1;
@@ -45,9 +48,12 @@ int outer_selecter(struct Parameter *para, double *bvec, double *xvec, double *v
     error_log("not define now");
     return -1;
   }
-  if(handle==1)
+  if(handle_out==1)
   {
     normal_log("OuterSolver convergence");
+  }else if(handle_out==-1)
+  {
+    error_log("error in outer_selecter");
   }else{
     normal_log("OuterSolver NOT convergence");
   }
@@ -56,32 +62,29 @@ int outer_selecter(struct Parameter *para, double *bvec, double *xvec, double *v
 
 int inner_selecter(struct Parameter *para, double *bvec, double *xvec, double *val, int *col, int *ptr, int N, int NNZ)
 {
-  int handle = 0;
+  int handle_in = 0;
   bool isinner = true;
-
-  printf("selecting inner solver\n");
 
   if(para->isVP==true)
   {
     if(para->c_inner_solver == CG)
     {
-      printf("is inner CG\n");
-      handle = CG_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
+      handle_in = CG_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
     }else if(para->c_inner_solver == CR)
     {
-      handle = CR_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
+      handle_in = CR_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
     }else if(para->c_inner_solver == GCR)
     {
-      handle = GCR_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
+      handle_in = GCR_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
     }else if(para->c_inner_solver == GMRES)
     {
-      handle = GMRES_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
+      handle_in = GMRES_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
     }else if(para->c_inner_solver == KSKIPCG)
     {
-      handle = KSKIPCG_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
+      handle_in = KSKIPCG_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
     }else if(para->c_inner_solver == KSKIPCR)
     {
-      /* handle = KSKIPCR_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner); */
+      /* handle_in = KSKIPCR_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner); */
       warning_log("kskipcr have some bug");
     }
     else{
@@ -89,14 +92,17 @@ int inner_selecter(struct Parameter *para, double *bvec, double *xvec, double *v
       return -1;
     }
   }else{
-    error_log("not define now");
+    error_log("error");
     return -1;
   }
-  if(handle==1)
+  if(handle_in==1)
   {
-    normal_log("OuterSolver convergence");
+    normal_log("InnerSolver convergence");
+  }else if(handle_in==2){
+    normal_log("InnerSolver NOT convergence");
   }else{
-    normal_log("OuterSolver NOT convergence");
+    error_log("error in inner_selecter");
+    return -1;
   }
   return 0;
 }

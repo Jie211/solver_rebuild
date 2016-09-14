@@ -11,7 +11,8 @@ SRCS = \
 			 CRS/gmres.c \
 			 CRS/kskipcg.c \
 			 CRS/kskipcr.c \
-			 CRS/vpcg.c
+			 CRS/vpcg.c \
+       CRS/vpcr.c
 
 INC_DIR = .
 

@@ -215,6 +215,9 @@ int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const s
     t_error = error_d_CRS(val, col, ptr, bvec, xvec, x_0, N);
     printf("|b-ax|2/|b|2=%.1f\n", t_error);
     printf("loop=%d\n", loop+1);
+  }else{
+    fclose(p_x);
+    fclose(p_his);
   }
   if(f_isinner && f_verbose)
   {
@@ -231,10 +234,6 @@ int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const s
     free_2d(qvec, i_restart);
     free_2d(pvec, i_restart);
   }
-  if(f_isinner)
-  {
-    fclose(p_x);
-    fclose(p_his);
-  }
+  
   return exit_flag;
 }

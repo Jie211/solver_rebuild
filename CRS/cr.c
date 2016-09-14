@@ -159,6 +159,9 @@ int CR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const st
     t_error = error_d_CRS(val, col, ptr, bvec, xvec, x_0, N);
     printf("|b-ax|2/|b|2=%.1f\n", t_error);
     printf("loop=%d\n", loop+1);
+  }else{
+    fclose(p_x);
+    fclose(p_his);
   }
   if(f_isinner && f_verbose)
   {
@@ -173,10 +176,6 @@ int CR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const st
     free_1d(qvec);
     free_1d(x_0);
   }
-  if(f_isinner)
-  {
-    fclose(p_x);
-    fclose(p_his);
-  }
+  
   return exit_flag;
 }
