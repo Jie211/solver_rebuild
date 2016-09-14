@@ -10,7 +10,8 @@ SRCS = \
 			 CRS/gcr.c \
 			 CRS/gmres.c \
 			 CRS/kskipcg.c \
-			 CRS/kskipcr.c
+			 CRS/kskipcr.c \
+			 CRS/vpcg.c
 
 INC_DIR = .
 
@@ -21,7 +22,7 @@ DEPS=$(patsubst %.o,%.d, $(OBJS))
 
 UNAME := $(shell uname)
 ifeq ($(UNAME), Linux)
-	CC = gcc
+	CC = gcc5
 	CFLAGS += -lm
 endif
 ifeq ($(UNAME), Darwin)
@@ -32,7 +33,7 @@ ifeq ($(UNAME), Windows_NT)
 endif
 
 TARGET = Solver
-CFLAGS += $(addprefix -I,$(INC_DIR)) -fopenmp -Wall
+CFLAGS += $(addprefix -I,$(INC_DIR)) -fopenmp -Wall -g
 LDFLAGS +=
 
 all: $(BUILD_DIR) $(TARGET)

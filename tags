@@ -35,7 +35,7 @@ KSKIPCG_init	CRS/kskipcg.c	/^void KSKIPCG_init(double **Ap, double **Ar, double 
 KSKIPCR	share.h	/^  KSKIPCR,$/;"	e	enum:SolverName
 KSKIPCR_CRS	CRS/kskipcr.c	/^int KSKIPCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)$/;"	f
 KSKIPCR_H_INCLUDED__	CRS/kskipcr.h	2;"	d
-KSKIPCR_init	CRS/kskipcr.c	/^void KSKIPCR_init(double *Ar, double *Ap, double *delta, double *eta, double *zeta, double *rvec, double *pvec, double *Av, double *xvec, const int N, const int kskip)$/;"	f
+KSKIPCR_Init	CRS/kskipcr.c	/^void KSKIPCR_Init(double *v1, double *v2, double *v3, double *v4, double *v5, double *v6, double *v7, double *v8, double *v9, int N, int kskip)$/;"	f
 MV_mult_CSR	blas.c	/^void MV_mult_CSR(double *out, const double *val, const int *col, const int *ptr, const double *vec, const int N)$/;"	f
 NONE	share.h	/^  NONE$/;"	e	enum:SolverName
 OBJS	Makefile	/^OBJS=$(addprefix $(BUILD_DIR)\/,$(patsubst %.c,%.o,$(SRCS)))$/;"	m
@@ -49,6 +49,9 @@ TARGET	Makefile	/^TARGET = Solver$/;"	m
 TOOLS_H_INCLUDED__	tools.h	2;"	d
 UNAME	Makefile	/^UNAME := $(shell uname)$/;"	m
 VPCG	share.h	/^  VPCG,$/;"	e	enum:SolverName
+VPCG_CRS	CRS/vpcg.c	/^int VPCG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, struct Parameter *para, const int N, const int NNZ, const bool f_isinner)$/;"	f
+VPCG_H_INCLUDED__	CRS/vpcg.h	2;"	d
+VPCG_Init	CRS/vpcg.c	/^void VPCG_Init(double *rvec, double *pvec, double *Av, double *zvec, double *xvec, const int N)$/;"	f
 VPCR	share.h	/^  VPCR,$/;"	e	enum:SolverName
 VPGCR	share.h	/^  VPGCR,$/;"	e	enum:SolverName
 VPGMRES	share.h	/^  VPGMRES,$/;"	e	enum:SolverName
@@ -92,6 +95,7 @@ i_outer_maxloop	share.h	/^  int i_outer_maxloop;$/;"	m	struct:Parameter
 i_outer_restart	share.h	/^  int i_outer_restart;$/;"	m	struct:Parameter
 i_thread	share.h	/^  int i_thread;$/;"	m	struct:Parameter
 init_ver	io.c	/^void init_ver(struct Parameter *para)$/;"	f
+inner_selecter	selecter.c	/^int inner_selecter(struct Parameter *para, double *bvec, double *xvec, double *val, int *col, int *ptr, int N, int NNZ)$/;"	f
 isVP	share.h	/^  bool isVP;$/;"	m	struct:Parameter
 list	share.h	/^  char list[20][128];$/;"	m	struct:Parameter
 main	main.c	/^int main(int argc, char *argv[])$/;"	f

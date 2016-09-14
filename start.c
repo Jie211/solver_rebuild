@@ -43,7 +43,7 @@ int csr_start(int argc, char *argv[])
     col = malloc_1i(NNZ);
     ptr = malloc_1i(N+1);
   }else{
-    error_log("not done now");
+    error_log("Cuda not done now");
     return -1;
   }
 
@@ -64,7 +64,7 @@ int csr_start(int argc, char *argv[])
     free_1i(col);
     free_1i(ptr);
   }else{
-    error_log("not done now");
+    error_log("Cuda not done now");
     return -1;
   }
   return 0;
