@@ -20,6 +20,7 @@ int get_opt(int argc, char *argv[], struct Parameter *para);
 int check_opt(struct Parameter *para);
 int check_solver(char *optarg, enum SolverName *solver);
 void show_opt(struct Parameter *para);
+void show_help(void);
 int find_mat(struct Parameter *para);
 int get_mat_head(const struct Parameter *para, int *N, int *NNZ);
 int get_mat_data(const struct Parameter *para, int *col, int *ptr, double *val, double *bvec, double *xvec, const int N, const int NNZ);

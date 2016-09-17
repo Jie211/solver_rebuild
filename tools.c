@@ -17,7 +17,7 @@ void warning_log(char *output)
 void normal_log(char *output)
 {
   printf("\x1b[32m");
-  printf("[◯] %s\n",output);
+  printf("[○] %s\n",output);
   printf("\x1b[0m");
 }
 

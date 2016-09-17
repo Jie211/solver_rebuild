@@ -12,7 +12,9 @@ SRCS = \
 			 CRS/kskipcg.c \
 			 CRS/kskipcr.c \
 			 CRS/vpcg.c \
-       CRS/vpcr.c
+       CRS/vpcr.c \
+       CRS/vpgcr.c \
+       CRS/vpgmres.c
 
 INC_DIR = .
 
@@ -34,10 +36,14 @@ ifeq ($(UNAME), Windows_NT)
 endif
 
 TARGET = Solver
-CFLAGS += $(addprefix -I,$(INC_DIR)) -fopenmp -Wall -g
+CFLAGS += $(addprefix -I,$(INC_DIR)) -fopenmp -Wall
 LDFLAGS +=
 
-all: $(BUILD_DIR) $(TARGET)
+.PHONY: all clean cpu debug
+
+all: cpu
+
+cpu: $(BUILD_DIR) $(TARGET)
 
 $(BUILD_DIR):
 	mkdir -p $(BUILD_DIR)

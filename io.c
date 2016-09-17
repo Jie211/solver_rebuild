@@ -60,12 +60,12 @@ int get_opt(int argc, char *argv[], struct Parameter *para)
     {"Thread", required_argument, NULL, 't'},
     {"Cuda", no_argument, NULL, 'c'},
     {"Verbose", no_argument, NULL, 'v'},
+    {"Help", no_argument, NULL, 'h'},
     {0,        0,           0,      0 },
   };
 
-  while((opt=getopt_long_only(argc, argv, "m:S:s:L:l:E:e:R:r:K:k:F:f:t:cv", longopts, &longindex)) != -1)
+  while((opt=getopt_long_only(argc, argv, "m:S:s:L:l:E:e:R:r:K:k:F:f:t:cvh", longopts, &longindex)) != -1)
   {
-    /* printf("%d %s\n", longindex, longopts[longindex].name); */
     switch(opt)
     {
       case 'm':
@@ -117,6 +117,9 @@ int get_opt(int argc, char *argv[], struct Parameter *para)
       case 'v':
         para->f_verbose=true;
         break;
+      case 'h':
+        show_help();
+        exit(0);
       default:
         warning_log("Unknow option");
         return -1;
@@ -126,6 +129,46 @@ int get_opt(int argc, char *argv[], struct Parameter *para)
   normal_log("pass get_opt");
 #endif
   return 0;
+}
+
+void show_help(void)
+{
+  printf("Options:\n");
+  printf("\t-Matrix/-m: directory name of matrix(CRS format), directory must in  \n");
+  printf("\t\t|-Solver root/Solver\n");
+  printf("\t\t|-Matrix/CRS/\n");
+  printf("\t-OuterSolver/-S: select solver to use, if use VP method this option mean outer solver\n");
+  printf("\t-InnerSolver/-s: if use VP method this option mean inner solver\n");
+  printf("Option: \n"
+      "\tRequire Options:\n"
+      "\t\t-m/-Matrix [matrix name]-> Matrix to solve\n"
+      "\t\t\t-S/-OuterSolver [solver name]-> Select Outsider solver\n"
+      "\t\t\t-s/-InnerSolver [solver name]-> Select Insider solver\n"
+      "\tOther Options:\n"
+      "\t\t-L/-OuterLoop [int]-> maxloop for Outer solver\n"
+      "\t\t-l/-InnerLoop [int]-> maxloop for Inner solver\n"
+      "\t\t-E/-OuterEPS [double]-> EPS for Outer solver\n"
+      "\t\t-e/-InnerEPS [double]-> EPS for Inner solver\n"
+      "\t\t-R/-OuterRestart [int]-> Restart counter for Outer solver\n"
+      "\t\t-r/-InnerRestart [int]-> Restart counter for Outer solver\n"
+      "\t\t-K/-OuterKskip [int]-> skip num for K-skip Outer solver\n"
+      "\t\t-k/-InnerKskip [int]-> skip num for K-skip Inner solver\n"
+      "\t\t-F/-OuterFix [1,2]-> BugFix for K-skip Outer solver(DEBUG)\n"
+      "\t\t-f/-InnerFix [1,2]-> BugFix for K-skip Inner solver(DEBUG)\n"
+      "\t\t-v/-Verbose -> verbose mode\n"
+      "\t\t-t/-Thread [num]-> Thread for OpenMP\n"
+      "\t\t-c/-Cuda -> Cuda mode\n"
+      "\t\t-h/-Help -> Help \n");
+  printf("==================================================================\n");
+  printf("SupportMethod: \n"
+      "\tStand-along:\n"
+      "\t\tcg, cr, gcr, gmres, kskipcg\n"
+      "\tOuter:\n"
+      "\t\tvpcg, vpcr, vpgmres\n"
+      "\tInner:\n"
+      "\t\tcg, cr, gcr, gmres, kskipcg\n");
+  printf("==================================================================\n");
+
 }
 
 int check_opt(struct Parameter *para)
@@ -239,7 +282,11 @@ int check_solver(char *optarg, enum SolverName *solver)
   }else if(strncmp(optarg, "VPCR", 4)==0 || strncmp(optarg, "vpcr", 4)==0)
   {
     *solver=VPCR;
-  }else if(strncmp(optarg, "VPGMRES", 7)==0 || strncmp(optarg, "vpgmres", 7)==0)
+  }else if(strncmp(optarg, "VPGCR", 5)==0 || strncmp(optarg, "vpgcr", 5)==0)
+  {
+    *solver=VPGCR;
+  }
+  else if(strncmp(optarg, "VPGMRES", 7)==0 || strncmp(optarg, "vpgmres", 7)==0)
   {
     *solver=VPGMRES;
   }else{

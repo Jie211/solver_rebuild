@@ -193,12 +193,13 @@ int KSKIPCG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, con
   {
     file_print(p_x, xvec, N);
     fclose(p_x);
+    fclose(p_his);
     t_error = error_d_CRS(val, col, ptr, bvec, xvec, x_0, N);
     printf("|b-ax|2/|b|2=%.1f\n", t_error);
     printf("loop=%d\n", nloop+1);
   }else{
-    fclose(p_x);
-    fclose(p_his);
+    /* fclose(p_x); */
+    /* fclose(p_his); */
   }
   if(f_isinner && f_verbose)
   {

@@ -1,0 +1,26 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	2	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+CG_CRS	cg.c	/^int CG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)$/;"	f
+CG_Init	cg.c	/^void CG_Init(double *rvec, double *pvec, double *Av, double *xvec, const int N)$/;"	f
+CR_CRS	cr.c	/^int CR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)$/;"	f
+CR_init	cr.c	/^void CR_init(double *rvec, double *pvec, double *qvec, double *svec, double *xvec, const int N)$/;"	f
+GCR_CRS	gcr.c	/^int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)$/;"	f
+GCR_init	gcr.c	/^void GCR_init(double *rvec, double *Av, double *x_0, double *qq, double **qvec, double **pvec, const int N, const int restart)$/;"	f
+GMRES_CRS	gmres.c	/^int GMRES_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)$/;"	f
+GMRES_init	gmres.c	/^void GMRES_init(double *rvec, double *axvec, double *evec, double *vvec, double *vmtx, double *hmtx, double *yvec, double *wvec, double *avvec, double *hvvec, double *cvec, double *svec, double *x0vec, double *tmpvec, double *x_0, double *xvec, const int N, const int restart)$/;"	f
+KSKIPCG_CRS	kskipcg.c	/^int KSKIPCG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)$/;"	f
+KSKIPCG_init	kskipcg.c	/^void KSKIPCG_init(double **Ap, double **Ar, double *delta, double *eta, double *zeta, double *rvec, double *pvec, double *Av, double *xvec, const int N, const int kskip)$/;"	f
+KSKIPCR_CRS	kskipcr.c	/^int KSKIPCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)$/;"	f
+KSKIPCR_Init	kskipcr.c	/^void KSKIPCR_Init(double *v1, double *v2, double *v3, double *v4, double *v5, double *v6, double *v7, double *v8, double *v9, int N, int kskip)$/;"	f
+VPCG_CRS	vpcg.c	/^int VPCG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, struct Parameter *para, const int N, const int NNZ, const bool f_isinner)$/;"	f
+VPCG_Init	vpcg.c	/^void VPCG_Init(double *rvec, double *pvec, double *Av, double *zvec, double *xvec, const int N)$/;"	f
+VPCR_CRS	vpcr.c	/^int VPCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, struct Parameter *para, const int N, const int NNZ, const bool f_isinner)$/;"	f
+VPCR_Init	vpcr.c	/^void VPCR_Init(double *rvec, double *pvec, double *zvec, double *Av, double *Ap, double *xvec, const int N)$/;"	f
+VPGCR_CRS	vpgcr.c	/^int VPGCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, struct Parameter *para, const int N, const int NNZ, const bool f_isinner)$/;"	f
+VPGCR_Init	vpgcr.c	/^void VPGCR_Init(double *rvec, double *zvec, double *Av, double **qvec, double **pvec, double *qq, double *xvec, const int N, const int restart)$/;"	f
+VPGMRES_CRS	vpgmres.c	/^int VPGMRES_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, struct Parameter *para, const int N, const int NNZ, const bool f_isinner){$/;"	f
+VPGMRES_Init	vpgmres.c	/^void VPGMRES_Init(double *rvec, double *axvec, double *evec, double *vvec, double *vmtx, double *hmtx, double *yvec, double *wvec, double *avvec, double *hvvec, double *cvec, double *svec, double *x0vec, double *tmpvec, double *zmtx, double *zvec, double *xvec, const int N, const int i_restart)$/;"	f

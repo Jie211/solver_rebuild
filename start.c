@@ -55,6 +55,8 @@ int csr_start(int argc, char *argv[])
   if(error_handle(error, "error in outer_selecter")!=0)
     return -1;
 
+  show_opt(&para);
+
   if( para.f_cuda == false )
   {
     free_1d(bvec);

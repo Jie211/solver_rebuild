@@ -121,9 +121,9 @@ int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const s
       }
       if(error <= d_eps)
       {
-/* #ifdef EBUG */
-/*         normal_log("GCR convergence"); */
-/* #endif */
+#ifdef EBUG
+        normal_log("GCR convergence");
+#endif
         exit_flag = 1;
         out_flag=true;
         break;
@@ -216,8 +216,8 @@ int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const s
     printf("|b-ax|2/|b|2=%.1f\n", t_error);
     printf("loop=%d\n", loop+1);
   }else{
-    /* fclose(p_x); */
-    /* fclose(p_his); */
+    fclose(p_x);
+    fclose(p_his);
   }
   if(f_isinner && f_verbose)
   {
