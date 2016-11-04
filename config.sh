@@ -18,7 +18,7 @@ VPSolver()
   do
 # $1 -> Matrix $2 -> outer sovler $3 -> inner solver $4 max innerloop 
     rm -f ./output/*
-    ./Solver -m $1 -S $2 -s $3 -k $i -l 10 >> ../$DIR/$MAT/$1-$2-$3-k$i.log
+    ./Solver -m $1 -S $2 -s $3 -k $i -l 10 -R 1000 >> ../$DIR/$MAT/$1-$2-$3-k$i.log
     cp ./output/${2^^}_his.txt ../$DIR/$MAT/$1-$2-$3-k$i.txt
     echo "-------- Matrix [$1] OuterSolver [$2] InnerSolver [$3] in k [$i] Done ------"
   done
@@ -40,7 +40,7 @@ if [ $# -ne 1 ]; then
   exit 1
 fi
 
-DIR="16-9-17-L10"
+DIR="16-9-20-L10"
 MAT=$1
 
 DIRFULL=../$DIR/$MAT/EPS/
@@ -49,18 +49,18 @@ if [ ! -e $DIRFULL ]; then
   echo "mkdir"
 fi
 
-NomalSolver $MAT "cg"
-NomalSolver $MAT "cr"
-NomalSolver $MAT "gcr"
-NomalSolver $MAT "gmres"
-NomalSolver $MAT "kskipcg"
+#NomalSolver $MAT "cg"
+#NomalSolver $MAT "cr"
+#NomalSolver $MAT "gcr"
+#NomalSolver $MAT "gmres"
+#NomalSolver $MAT "kskipcg"
 #
 
-VPSolver $MAT "vpcg" "kskipcg" "4"
-VPSolver $MAT "vpgcr" "kskipcg" "4"
+#VPSolver $MAT "vpcg" "kskipcg" "4"
+#VPSolver $MAT "vpgcr" "kskipcg" "4"
 VPSolver $MAT "vpgmres" "kskipcg" "4"
 
-OneLine $MAT "cg" "cr" "gcr" "gmres" "kskipcg" 
+#OneLine $MAT "cg" "cr" "gcr" "gmres" "kskipcg" 
 
 echo "===================over========================="
 

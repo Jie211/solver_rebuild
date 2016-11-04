@@ -14,7 +14,8 @@ SRCS = \
 			 CRS/vpcg.c \
        CRS/vpcr.c \
        CRS/vpgcr.c \
-       CRS/vpgmres.c
+       CRS/vpgmres.c \
+       CRS/bicg.c
 
 INC_DIR = .
 
@@ -25,7 +26,7 @@ DEPS=$(patsubst %.o,%.d, $(OBJS))
 
 UNAME := $(shell uname)
 ifeq ($(UNAME), Linux)
-	CC = gcc5
+	CC = gcc
 	CFLAGS += -lm
 endif
 ifeq ($(UNAME), Darwin)
@@ -36,7 +37,7 @@ ifeq ($(UNAME), Windows_NT)
 endif
 
 TARGET = Solver
-CFLAGS += $(addprefix -I,$(INC_DIR)) -fopenmp -Wall
+CFLAGS += $(addprefix -I,$(INC_DIR)) -fopenmp -Wall -fno-use-linker-plugin
 LDFLAGS +=
 
 .PHONY: all clean cpu debug

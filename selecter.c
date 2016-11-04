@@ -26,6 +26,9 @@ int outer_selecter(struct Parameter *para, double *bvec, double *xvec, double *v
     {
       /* handle = KSKIPCR_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner); */
       warning_log("kskipcr have some bug");
+    }else if(para->c_outer_solver == BICG)
+    {
+      handle_out = BICG_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
     }
     else{
       error_log("not define now");
@@ -93,6 +96,8 @@ int inner_selecter(struct Parameter *para, double *bvec, double *xvec, double *v
     {
       /* handle_in = KSKIPCR_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner); */
       warning_log("kskipcr have some bug");
+    }else if(para->c_inner_solver == BICG){
+      handle_in = BICG_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
     }
     else{
       error_log("not define now");
@@ -104,9 +109,9 @@ int inner_selecter(struct Parameter *para, double *bvec, double *xvec, double *v
   }
   if(handle_in==1)
   {
-    normal_log("InnerSolver convergence");
+    /* normal_log("InnerSolver convergence"); */
   }else if(handle_in==2){
-    normal_log("InnerSolver NOT convergence");
+    /* normal_log("InnerSolver NOT convergence"); */
   }else{
     error_log("error in inner_selecter");
     return -1;

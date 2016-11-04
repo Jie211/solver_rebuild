@@ -289,7 +289,12 @@ int check_solver(char *optarg, enum SolverName *solver)
   else if(strncmp(optarg, "VPGMRES", 7)==0 || strncmp(optarg, "vpgmres", 7)==0)
   {
     *solver=VPGMRES;
-  }else{
+  }
+  else if(strncmp(optarg, "BICG", 4)==0 || strncmp(optarg, "bicg", 4)==0)
+  {
+    *solver=BICG;
+  }
+  else{
     warning_log("not defined solver name");
     return -1;
   }
