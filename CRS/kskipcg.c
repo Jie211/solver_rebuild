@@ -13,7 +13,7 @@ void KSKIPCG_init(double **Ap, double **Ar, double *delta, double *eta, double *
   vec_init(xvec, 0.0, N);
 }
 
-int KSKIPCG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)
+int KSKIPCG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)
 {
   int nloop, iloop, jloop;
   /* int i, ii; */

@@ -11,8 +11,7 @@
 
 void VPCR_Init(double *rvec, double *pvec, double *zvec, double *Av, double *Ap, double *xvec, const int N);
 
-int VPCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, struct Parameter *para, const int N, const int NNZ, const bool f_isinner);
-
+int VPCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, double *bvec, double *xvec, struct Parameter *para, const int N, const int NNZ, const bool f_isinner);
 
 #endif //VPCR_H_INCLUDED__
 

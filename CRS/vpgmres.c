@@ -24,7 +24,7 @@ void VPGMRES_Init(double *rvec, double *axvec, double *evec, double *vvec, doubl
 }
 
 
-int VPGMRES_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, struct Parameter *para, const int N, const int NNZ, const bool f_isinner){
+int VPGMRES_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, double *bvec, double *xvec, struct Parameter *para, const int N, const int NNZ, const bool f_isinner){
   int i,j,k;
   FILE *p_x,*p_his;
   double *rvec, *axvec, *evec, *vvec, *vmtx, *hmtx, *yvec, *wvec, *avvec, *hvvec, *cvec, *svec, *x0vec, *tmpvec, *zmtx, *zvec, *x_0;
@@ -76,6 +76,8 @@ int VPGMRES_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, str
   /* b_norm = vector_norm_2(bvec,ndata); */
   b_norm = norm_2_d(bvec, ndata);
   vec_copy(x_0, xvec, ndata);
+
+  printf("@@@@@@@@@@MAX = %d\n", i_max);
 
   //outer loop 
   for(count=0;count<i_max;){
@@ -135,7 +137,7 @@ int VPGMRES_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, str
         break;
       }
       //inner solver
-      error_message = inner_selecter(para, vvec, zvec, val, col, ptr, N, NNZ);
+      error_message = inner_selecter(para, vvec, zvec, val, col, ptr, Tval, Tcol, Tptr, N, NNZ);
       if(error_message == -1){
         error_log("error in vpgmres - inner_selecter");
       }

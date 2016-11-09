@@ -15,7 +15,7 @@ void KSKIPBICG_init(double **Ap, double **Ar, double *theta, double *eta, double
   vec_init(Av, 0.0, N);
   vec_init(xvec, 0.0, N);
 }
-int KSKIPBICG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)
+int KSKIPBICG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)
 {
   int nloop, iloop, jloop;
 
@@ -38,7 +38,7 @@ int KSKIPBICG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, c
   bool f_cuda = para->f_cuda;
   /* int i_fix; */
   bool f_verbose = para->f_verbose;
-
+  
   if(!f_isinner)
   {
     p_x=file_init("./output/KSKIPBICG_x.txt", "w");
@@ -78,38 +78,9 @@ int KSKIPBICG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, c
 
     Av=malloc_1d(N);
     x_0=malloc_1d(N);
+
   }
  
-
-  int i, j, k;
-  double *Tval;
-  int *Tcol, *Tptr;
-  int Tlock=0;
-  int col_counter=0;
-  Tval=(double *)malloc(sizeof(double)*NNZ);
-  Tcol=(int *)malloc(sizeof(int)*NNZ);
-  Tptr=(int *)malloc(sizeof(int)*N+1);
-
-  for(i=0;i<N;i++){
-    Tlock=0;
-    for(j=0;j<N;j++){
-      for(k=ptr[j];k<ptr[j+1];k++){
-        if(col[k]==i){
-          if(Tlock==0){
-            Tptr[i] = col_counter;
-            Tlock=1;
-          }
-          Tcol[col_counter] = j;
-          Tval[col_counter] = val[k];
-          col_counter++;
-          continue;
-        }
-      }
-    }
-  }
-  Tptr[N]=NNZ;
-
-
 
   //
   //start here
@@ -277,9 +248,6 @@ int KSKIPBICG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, c
     free_1d(x_0);
     free_2d(Ap, 2*i_kskip+2);
     free_2d(Ar, 2*i_kskip+1);
-    free(Tval);
-    free(Tcol);
-    free(Tptr);
   }
   
   return exit_flag;

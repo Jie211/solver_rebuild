@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 
 double norm_1_d(double *v, const int N);
@@ -36,5 +37,7 @@ void cal_deltaetazeta_kskipcr_d(double *delta, double *eta, double *zeta, double
 void cal_arap_kskipbicg_d(double **Ar, double **Ap, double *val, int *col, int *ptr, double *rvec, double *pvec, const int N, const int kskip);
 
 void cal_theta_eta_rho_phi_kskipcg_d(double *theta, double *eta, double *rho, double *phi, double **Ar, double **Ap, double *rvec, double *pvec, double *r_vec, double *p_vec, const int N, const int kskip);
+
+void Transpose_d(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, const int N, const int NNZ);
 #endif //BLAS_H_INCLUDED__
 

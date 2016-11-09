@@ -10,7 +10,7 @@ void BICG_Init(double *rvec, double *r_vec, double *pvec, double *p_vec, double 
   vec_init(xvec, 0.0, N);
 }
 
-int BICG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)
+int BICG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)
 {
   int loop;
 
@@ -47,42 +47,8 @@ int BICG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const 
     p_vec = malloc_1d(N);
     Av = malloc_1d(N);
     x_0 = malloc_1d(N);
+
   }
-
-
-
-  int i, j, k;
-  double *Tval;
-  int *Tcol, *Tptr;
-  int Tlock=0;
-  int col_counter=0;
-  Tval=(double *)malloc(sizeof(double)*NNZ);
-  Tcol=(int *)malloc(sizeof(int)*NNZ);
-  Tptr=(int *)malloc(sizeof(int)*N+1);
-
-  for(i=0;i<N;i++){
-    Tlock=0;
-    for(j=0;j<N;j++){
-      for(k=ptr[j];k<ptr[j+1];k++){
-        if(col[k]==i){
-          if(Tlock==0){
-            Tptr[i] = col_counter;
-            Tlock=1;
-          }
-          Tcol[col_counter] = j;
-          Tval[col_counter] = val[k];
-          col_counter++;
-          continue;
-        }
-      }
-    }
-  }
-  Tptr[N]=NNZ;
-
-
-
-
-
 
 
   //
@@ -224,9 +190,6 @@ int BICG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const 
     free_1d(Av);
     free_1d(x_0);
 
-    free(Tval);
-    free(Tcol);
-    free(Tptr);
   }
 
   return exit_flag;

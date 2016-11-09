@@ -343,3 +343,26 @@ void cal_deltaetazeta_kskipcr_d(double *delta, double *eta, double *zeta, double
   }
 }
 
+void Transpose_d(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, const int N, const int NNZ){
+
+  int col_counter = 0;
+  memset(Tptr, -1, sizeof(int)*(N+1));
+
+  for(int i=0;i<N;i++){
+    for(int j=0;j<N;j++){
+      for(int k=ptr[j];k<ptr[j+1];k++){
+        if(col[k]==i){
+          if(Tptr[i]==-1){
+            Tptr[i] = col_counter;
+          }
+          Tcol[col_counter] = j;
+          Tval[col_counter] = val[k];
+          col_counter++;
+          continue;
+        }
+      }
+    }
+  }
+
+  Tptr[N] = NNZ;
+}

@@ -12,6 +12,8 @@ void init_ver(struct Parameter *para)
   strcpy(para->list[7], "VPCR");
   strcpy(para->list[8], "VPGCR");
   strcpy(para->list[9], "VPGMRES");
+  strcpy(para->list[10], "BICG");
+  strcpy(para->list[11], "KSKIPBICG");
 
   para->isVP=false;
   para->f_cuda=false;

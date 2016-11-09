@@ -10,13 +10,14 @@ SRCS = \
 			 CRS/gcr.c \
 			 CRS/gmres.c \
 			 CRS/kskipcg.c \
-			 CRS/kskipcr.c \
 			 CRS/vpcg.c \
        CRS/vpcr.c \
        CRS/vpgcr.c \
        CRS/vpgmres.c \
        CRS/bicg.c \
        CRS/kskipbicg.c
+
+# CRS/kskipcr.c \
 
 INC_DIR = .
 
@@ -28,7 +29,8 @@ DEPS=$(patsubst %.o,%.d, $(OBJS))
 UNAME := $(shell uname)
 ifeq ($(UNAME), Linux)
 	CC = gcc
-	CFLAGS += -lm
+	# CFLAGS += -lm -std=c99 -pg
+	CFLAGS += -lm -std=c99 -pg
 endif
 ifeq ($(UNAME), Darwin)
 	CC = gcc-6
@@ -59,6 +61,9 @@ $(BUILD_DIR)/%.o : %.c
 
 clean:
 	rm -rf $(BUILD_DIR) $(TARGET)
+
+debug:
+	gprof ./$(TARGET) | ./gprof2dot.py | dot -Tpng -o debug.png
 
 .PHONY: all clean
 -include $(DEPS)

@@ -10,7 +10,7 @@ void GCR_init(double *rvec, double *Av, double *x_0, double *qq, double **qvec, 
   vec_init_2(pvec, 0.0, N, restart);
 }
 
-int GCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)
+int GCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)
 {
   int loop=0;
   int kloop, iloop;

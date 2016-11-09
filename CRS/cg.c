@@ -8,7 +8,7 @@ void CG_Init(double *rvec, double *pvec, double *Av, double *xvec, const int N)
   vec_init(xvec, 0.0, N);
 }
 
-int CG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)
+int CG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner)
 {
   int loop;
 

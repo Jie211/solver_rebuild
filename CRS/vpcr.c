@@ -10,7 +10,7 @@ void VPCR_Init(double *rvec, double *pvec, double *zvec, double *Av, double *Ap,
   vec_init(xvec, 0.0, N);
 }
 
-int VPCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, struct Parameter *para, const int N, const int NNZ, const bool f_isinner)
+int VPCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, double *bvec, double *xvec, struct Parameter *para, const int N, const int NNZ, const bool f_isinner)
 {
   int loop;
 
@@ -72,7 +72,7 @@ int VPCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, struct
   vec_sub(rvec, bvec, Av, N);
 
   // Az=r
-  get_error = inner_selecter(para, rvec, zvec, val, col, ptr, N, NNZ);
+  get_error = inner_selecter(para, rvec, zvec, val, col, ptr, Tval, Tcol, Tptr, N, NNZ);
   if(get_error==-1)
   {
     error_log("error in vpcr - inner_selecter");
@@ -128,7 +128,7 @@ int VPCR_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, struct
     vec_init(zvec, 0.0, N);
 
     //Az = r
-    get_error = inner_selecter(para, rvec, zvec, val, col, ptr, N, NNZ);
+    get_error = inner_selecter(para, rvec, zvec, val, col, ptr, Tval, Tcol, Tptr, N, NNZ);
     if(get_error==-1)
     {
       error_log("error in vpcg - inner_selecter");

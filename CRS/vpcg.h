@@ -11,6 +11,6 @@
 
 void VPCG_Init(double *rvec, double *pvec, double *Av, double *zvec, double *xvec, const int N);
 
-int VPCG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, struct Parameter *para, const int N, const int NNZ, const bool f_isinner);
+int VPCG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, double *bvec, double *xvec, struct Parameter *para, const int N, const int NNZ, const bool f_isinner);
 #endif //VPCG_H_INCLUDED__
 

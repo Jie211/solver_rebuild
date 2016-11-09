@@ -22,7 +22,7 @@ enum SolverName{
 };
 
 struct Parameter{
-  char list[20][128];
+  char list[30][128];
   bool isVP;
   bool f_cuda;
   bool f_verbose;

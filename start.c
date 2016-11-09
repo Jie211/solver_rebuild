@@ -9,6 +9,8 @@ int csr_start(int argc, char *argv[])
   int N, NNZ;
   double *bvec, *xvec, *val;
   int *col, *ptr;
+  double *Tval;
+  int *Tcol, *Tptr;
 
   init_ver(&para);
 
@@ -42,16 +44,24 @@ int csr_start(int argc, char *argv[])
     val = malloc_1d(NNZ);
     col = malloc_1i(NNZ);
     ptr = malloc_1i(N+1);
+
+    Tval=malloc_1d(NNZ);
+    Tcol=malloc_1i(NNZ);
+    Tptr=malloc_1i(N+1);
   }else{
     error_log("Cuda not done now");
     return -1;
   }
 
+
   error = get_mat_data(&para, col, ptr, val, bvec, xvec, N, NNZ);
   if(error_handle(error, "error in get_mat_data")!=0)
     return -1;
 
-  error = outer_selecter(&para, bvec, xvec, val, col, ptr, N, NNZ);
+  //A^T
+  Transpose_d(val, col, ptr, Tval, Tcol, Tptr, N, NNZ);
+
+  error = outer_selecter(&para, bvec, xvec, val, col, ptr, Tval, Tcol, Tptr, N, NNZ);
   if(error_handle(error, "error in outer_selecter")!=0)
     return -1;
 
@@ -65,6 +75,10 @@ int csr_start(int argc, char *argv[])
     free_1d(val);
     free_1i(col);
     free_1i(ptr);
+
+    free_1d(Tval);
+    free_1i(Tcol);
+    free_1i(Tptr);
   }else{
     error_log("Cuda not done now");
     return -1;

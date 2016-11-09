@@ -10,7 +10,7 @@
 
 void BICG_Init(double *rvec, double *r_vec, double *pvec, double *p_vec, double *Av, double *xvec, const int N);
 
-int BICG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner);
+int BICG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, double *bvec, double *xvec, const struct Parameter *para, const int N, const int NNZ, const bool f_isinner);
 
 #endif //BICG_H_INCLUDED__
 
