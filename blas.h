@@ -33,5 +33,8 @@ void cal_arap_kskipcr_d(double *Ar, double *Ap, double *val, int *col, int *ptr,
 
 void cal_deltaetazeta_kskipcr_d(double *delta, double *eta, double *zeta, double *Ar, double *Ap, double *rvec, const int N, const int kskip);
 
+void cal_arap_kskipbicg_d(double **Ar, double **Ap, double *val, int *col, int *ptr, double *rvec, double *pvec, const int N, const int kskip);
+
+void cal_theta_eta_rho_phi_kskipcg_d(double *theta, double *eta, double *rho, double *phi, double **Ar, double **Ap, double *rvec, double *pvec, double *r_vec, double *p_vec, const int N, const int kskip);
 #endif //BLAS_H_INCLUDED__
 

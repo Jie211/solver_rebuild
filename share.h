@@ -17,6 +17,7 @@ enum SolverName{
   VPGCR,
   VPGMRES,
   BICG,
+  KSKIPBICG,
   NONE
 };
 

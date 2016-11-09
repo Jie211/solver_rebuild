@@ -29,6 +29,9 @@ int outer_selecter(struct Parameter *para, double *bvec, double *xvec, double *v
     }else if(para->c_outer_solver == BICG)
     {
       handle_out = BICG_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
+    }else if(para->c_outer_solver == KSKIPBICG)
+    {
+      handle_out = KSKIPBICG_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
     }
     else{
       error_log("not define now");
@@ -98,6 +101,8 @@ int inner_selecter(struct Parameter *para, double *bvec, double *xvec, double *v
       warning_log("kskipcr have some bug");
     }else if(para->c_inner_solver == BICG){
       handle_in = BICG_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
+    }else if(para->c_inner_solver == KSKIPBICG){
+      handle_in = KSKIPBICG_CRS(val, col, ptr, bvec, xvec, para, N, NNZ, isinner);
     }
     else{
       error_log("not define now");

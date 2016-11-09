@@ -294,6 +294,10 @@ int check_solver(char *optarg, enum SolverName *solver)
   {
     *solver=BICG;
   }
+  else if(strncmp(optarg, "KSKIPBICG", 9)==0 || strncmp(optarg, "kskipbicg", 9)==0)
+  {
+    *solver=KSKIPBICG;
+  }
   else{
     warning_log("not defined solver name");
     return -1;

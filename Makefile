@@ -15,7 +15,8 @@ SRCS = \
        CRS/vpcr.c \
        CRS/vpgcr.c \
        CRS/vpgmres.c \
-       CRS/bicg.c
+       CRS/bicg.c \
+       CRS/kskipbicg.c
 
 INC_DIR = .
 

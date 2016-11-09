@@ -166,6 +166,7 @@ int KSKIPCG_CRS(double *val, int *col, int *ptr, double *bvec, double *xvec, con
 
       //update delta eta zeta
       for(jloop=0; jloop<2*i_kskip-2*(iloop-nloop);jloop++){
+      /* for(jloop=0; jloop<i_kskip-(iloop-nloop);jloop++){ */
         delta[jloop] = delta[jloop] - 2*alpha*eta[jloop+1] + alpha*alpha*eta[jloop+2];
         double eta_old=eta[jloop];
         eta[jloop] = delta[jloop] + beta*zeta[jloop+1] - alpha*beta*zeta[jloop+1];
