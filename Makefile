@@ -1,70 +1,53 @@
-SRCS = \
-			 main.cpp \
-			 blas.cpp \
-			 io.cpp \
-			 selecter.cpp \
-			 start.cpp \
-			 tools.cpp \
-			 CRS/cg.cpp \
-			 CRS/cr.cpp \
-			 CRS/gcr.cpp \
-			 CRS/gmres.cpp \
-			 CRS/kskipcg.cpp \
-			 CRS/vpcg.cpp \
-       CRS/vpcr.cpp \
-       CRS/vpgcr.cpp \
-       CRS/vpgmres.cpp \
-       CRS/bicg.cpp \
-       CRS/kskipbicg.cpp
+PROGRAM_NAME := Solver
 
-# CRS/kskipcr.c \
+program_CXX_SRCS := $(wildcard *.cpp)
+program_CXX_SRCS += $(wildcard ./CRS/*.cpp) #Find C++ source files from additonal directories
+program_CXX_OBJS := ${program_CXX_SRCS:.cpp=.o}
 
-INC_DIR = .
+program_CU_SRCS := $(wildcard *.cu)
+program_CU_OBJS := ${program_CU_SRCS:.cu=.cuo}
 
-BUILD_DIR = Build
+program_INCLUDE_DIRS := #C++ Include directories
 
-OBJS=$(addprefix $(BUILD_DIR)/,$(patsubst %.cpp,%.o,$(SRCS)))
-DEPS=$(patsubst %.o,%.d, $(OBJS))
+# Compiler flags
+CPPFLAGS += $(foreach includedir,$(program_INCLUDE_DIRS),-I$(includedir))
+# CXXFLAGS += -g -O3 -std=c++0x -Wall -pedantic
+CXXFLAGS += -g -Wall -fopenmp 
 
-UNAME := $(shell uname)
-ifeq ($(UNAME), Linux)
-	# CC = gcc
-	CC = g++
-	# CFLAGS += -lm -std=c99 -pg
-	CFLAGS += -lm
-endif
-ifeq ($(UNAME), Darwin)
-	CC = gcc-6
-endif
-ifeq ($(UNAME), Windows_NT)
-	exit 0
-endif
+GEN_SM35 := -gencode=arch=compute_35,code=\"sm_35,compute_35\" #Target CC 3.5, for example
+# NVFLAGS := -O3 -rdc=true #rdc=true needed for separable compilation
+NVFLAGS := -rdc=true -Xcompiler "-fopenmp"#rdc=true needed for separable compilation
+NVFLAGS += $(GEN_SM35)
+NVFLAGS += $(foreach includedir,$(program_CU_INCLUDE_DIRS),-I$(includedir))
 
-TARGET = Solver
-CFLAGS += $(addprefix -I,$(INC_DIR)) -fopenmp -Wall -fno-use-linker-plugin
-LDFLAGS +=
+CUO_O_OBJECTS := ${program_CU_OBJS:.cuo=.cuo.o}
 
-.PHONY: all clean cpu debug
+OBJECTS = $(program_CU_OBJS) $(program_CXX_OBJS)
 
-all: cpu
+.PHONY: all clean distclean
 
-cpu: $(BUILD_DIR) $(TARGET)
+all: $(PROGRAM_NAME) 
 
-$(BUILD_DIR):
-	mkdir -p $(BUILD_DIR)
+debug: CXXFLAGS = -g -O0 -std=c++0x -Wall -pedantic -DDEBUG $(EXTRA_FLAGS)
+debug: NVFLAGS = -O0 $(GEN_SM35) -g -G
+debug: NVFLAGS += $(foreach includedir,$(program_CU_INCLUDE_DIRS),-I$(includedir))
+debug: $(PROGRAM_NAME)
 
-$(TARGET) : $(OBJS)
-	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
+%.cuo: %.cu %.cuh
+	nvcc $(NVFLAGS) $(CPPFLAGS) -o $@ -dc $<
 
-$(BUILD_DIR)/%.o : %.cpp
-	mkdir -p $(dir $@); \
-		$(CC) -c $(CFLAGS) -o $@ $<
+$(PROGRAM_NAME): $(OBJECTS)
+	@ for cu_obj in $(program_CU_OBJS); \
+	do                                  \
+		mv $$cu_obj $$cu_obj.o;           \
+	done
+	nvcc $(NVFLAGS) $(CPPFLAGS) -o $@ $(program_CXX_OBJS) $(CUO_O_OBJECTS)
+	@ for cu_obj in $(CUO_O_OBJECTS);   \
+	do                                  \
+		mv $$cu_obj $${cu_obj%.*};        \
+	done
 
 clean:
-	rm -rf $(BUILD_DIR) $(TARGET)
+	@- $(RM) $(PROGRAM_NAME) $(OBJECTS) *~ 
 
-debug:
-	gprof ./$(TARGET) | ./gprof2dot.py | dot -Tpng -o debug.png
-
-.PHONY: all clean
--include $(DEPS)
+distclean: clean
