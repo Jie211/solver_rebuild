@@ -12,6 +12,7 @@ int csr_start(int argc, char *argv[])
   double *Tval;
   int *Tcol, *Tptr;
 
+
   init_ver(&para);
 
   error = get_opt(argc, argv, &para);
