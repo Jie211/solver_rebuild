@@ -12,6 +12,9 @@ int csr_start(int argc, char *argv[])
   double *Tval;
   int *Tcol, *Tptr;
 
+  double *test;
+  malloc_cuda_1d(10, test);
+  free_cuda_1d(test);
 
   init_ver(&para);
 
