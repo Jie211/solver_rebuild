@@ -38,7 +38,7 @@ int BICG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr
 
   if(f_cuda)
   {
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     Av = malloc_1d(N);
     rvec = malloc_1d(N);
@@ -75,7 +75,7 @@ int BICG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr
 
   //Ax
   if(f_cuda){
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     MV_mult_CSR(Av, val, col ,ptr, xvec, N);
   }
@@ -94,7 +94,7 @@ int BICG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr
 
   //r * r*
   if(f_cuda){
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     rr = dot_d(r_vec, rvec, N);
   }
@@ -116,14 +116,14 @@ int BICG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr
     //Ap
     if(f_cuda)
     {
-      error_log("not done yet");
+      error_log((char*)"not done yet");
     }else{
       MV_mult_CSR(Av, val, col, ptr, pvec, N);
     }
 
     //alpha = (r*, r) / (p*, Ap)
     if(f_cuda){
-      error_log("not done yet");
+      error_log((char*)"not done yet");
     }else{
       dot = dot_d(p_vec, Av, N);
     }
@@ -139,7 +139,7 @@ int BICG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr
     //A(t)p
     if(f_cuda)
     {
-      error_log("not done yet");
+      error_log((char*)"not done yet");
     }else{
       MV_mult_CSR(Av, Tval, Tcol, Tptr, p_vec, N);
     }
@@ -149,7 +149,7 @@ int BICG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr
 
     //r * r*
     if(f_cuda){
-      error_log("not done yet");
+      error_log((char*)"not done yet");
     }else{
       rr2 = dot_d(r_vec, rvec, N);
     }
@@ -183,7 +183,7 @@ int BICG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr
 
   if(f_cuda)
   {
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     free_1d(rvec);
     free_1d(pvec);

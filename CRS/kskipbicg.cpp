@@ -60,7 +60,7 @@ int KSKIPBICG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int 
 
   if(f_cuda)
   {
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     Ar=malloc_2d(N, 2*i_kskip+1);
     Ap=malloc_2d(N, 2*i_kskip+2);
@@ -95,7 +95,7 @@ int KSKIPBICG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int 
   //Av
   if(f_cuda)
   {
-    error_log("not done yet 1");
+    error_log((char*)"not done yet 1");
   }else{
     MV_mult_CSR(Av, val, col, ptr, xvec, N);
   }
@@ -137,7 +137,7 @@ int KSKIPBICG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int 
     //Ap-> Ap^2k+2
     if(f_cuda)
     {
-      error_log("not done yet 2");
+      error_log((char*)"not done yet 2");
     }else{
       cal_arap_kskipbicg_d(Ar, Ap, val, col, ptr, rvec, pvec, N, i_kskip);
     }
@@ -145,7 +145,7 @@ int KSKIPBICG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int 
     //gamma=(r*,r)
     if(f_cuda)
     {
-      error_log("not done yet 3");
+      error_log((char*)"not done yet 3");
     }else{
       gamma = dot_d(r_vec, rvec, N);
     }
@@ -160,7 +160,7 @@ int KSKIPBICG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int 
     //phi = (p*, Ap)
     if(f_cuda)
     {
-      error_log("not done yet 4");
+      error_log((char*)"not done yet 4");
     }else{
       cal_theta_eta_rho_phi_kskipcg_d(theta, eta, rho, phi, Ar, Ap, rvec, pvec, r_vec, p_vec, N, i_kskip);
     }
@@ -187,7 +187,7 @@ int KSKIPBICG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int 
       //Ap
       if(f_cuda)
       {
-        error_log("not done yet 5");
+        error_log((char*)"not done yet 5");
       }else{
         MV_mult_CSR(Av, val, col, ptr, pvec, N);
       }
@@ -201,7 +201,7 @@ int KSKIPBICG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int 
       //A^Tp*
       if(f_cuda)
       {
-        error_log("not done yet 5");
+        error_log((char*)"not done yet 5");
       }else{
         MV_mult_CSR(Av, Tval, Tcol, Tptr, p_vec, N);
       }
@@ -234,7 +234,7 @@ int KSKIPBICG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int 
   }
   if(f_cuda)
   {
-    error_log("not done yet 6");
+    error_log((char*)"not done yet 6");
   }else{
     free_1d(theta);
     free_1d(eta);

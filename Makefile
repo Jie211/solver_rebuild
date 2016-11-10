@@ -1,21 +1,21 @@
 SRCS = \
-			 main.c \
-			 blas.c \
-			 io.c \
-			 selecter.c \
-			 start.c \
-			 tools.c \
-			 CRS/cg.c \
-			 CRS/cr.c \
-			 CRS/gcr.c \
-			 CRS/gmres.c \
-			 CRS/kskipcg.c \
-			 CRS/vpcg.c \
-       CRS/vpcr.c \
-       CRS/vpgcr.c \
-       CRS/vpgmres.c \
-       CRS/bicg.c \
-       CRS/kskipbicg.c
+			 main.cpp \
+			 blas.cpp \
+			 io.cpp \
+			 selecter.cpp \
+			 start.cpp \
+			 tools.cpp \
+			 CRS/cg.cpp \
+			 CRS/cr.cpp \
+			 CRS/gcr.cpp \
+			 CRS/gmres.cpp \
+			 CRS/kskipcg.cpp \
+			 CRS/vpcg.cpp \
+       CRS/vpcr.cpp \
+       CRS/vpgcr.cpp \
+       CRS/vpgmres.cpp \
+       CRS/bicg.cpp \
+       CRS/kskipbicg.cpp
 
 # CRS/kskipcr.c \
 
@@ -23,14 +23,15 @@ INC_DIR = .
 
 BUILD_DIR = Build
 
-OBJS=$(addprefix $(BUILD_DIR)/,$(patsubst %.c,%.o,$(SRCS)))
+OBJS=$(addprefix $(BUILD_DIR)/,$(patsubst %.cpp,%.o,$(SRCS)))
 DEPS=$(patsubst %.o,%.d, $(OBJS))
 
 UNAME := $(shell uname)
 ifeq ($(UNAME), Linux)
-	CC = gcc
+	# CC = gcc
+	CC = g++
 	# CFLAGS += -lm -std=c99 -pg
-	CFLAGS += -lm -std=c99 -pg
+	CFLAGS += -lm
 endif
 ifeq ($(UNAME), Darwin)
 	CC = gcc-6
@@ -55,7 +56,7 @@ $(BUILD_DIR):
 $(TARGET) : $(OBJS)
 	$(CC) $(CFLAGS) $(LDFLAGS) -o $@ $^
 
-$(BUILD_DIR)/%.o : %.c
+$(BUILD_DIR)/%.o : %.cpp
 	mkdir -p $(dir $@); \
 		$(CC) -c $(CFLAGS) -o $@ $<
 

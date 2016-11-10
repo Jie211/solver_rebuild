@@ -35,7 +35,7 @@ int CR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, 
 
   if(f_cuda)
   {
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     rvec = malloc_1d(N);
     pvec = malloc_1d(N);
@@ -69,7 +69,7 @@ int CR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, 
   //Ax
   if(f_cuda)
   {
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     MV_mult_CSR(qvec, val, col, ptr, xvec, N);
   }
@@ -83,7 +83,7 @@ int CR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, 
   //q=Ap
   if(f_cuda)
   {
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     MV_mult_CSR(qvec, val, col, ptr, pvec, N);
   }
@@ -94,7 +94,7 @@ int CR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, 
   //(r, s)
   if(f_cuda)
   {
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     rs = dot_d(rvec, svec, N);
   }
@@ -114,7 +114,7 @@ int CR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, 
     if(error <= d_eps)
     {
 /* #ifdef EBUG */
-/*       normal_log("CR convergence"); */
+/*       normal_log((char*)"CR convergence"); */
 /* #endif */
       exit_flag = 1;
       break;
@@ -132,7 +132,7 @@ int CR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, 
     //s=Ar
     if(f_cuda)
     {
-      error_log("not done yet");
+      error_log((char*)"not done yet");
     }else{
       MV_mult_CSR(svec, val, col, ptr, rvec, N);
     }
@@ -170,7 +170,7 @@ int CR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, 
   }
   if(f_cuda)
   {
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     free_1d(rvec);
     free_1d(pvec);

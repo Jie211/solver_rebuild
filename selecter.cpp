@@ -24,7 +24,7 @@ int outer_selecter(struct Parameter *para, double *bvec, double *xvec, double *v
       handle_out = KSKIPCG_CRS(val, col, ptr, Tval, Tcol, Tptr, bvec, xvec, para, N, NNZ, isinner);
     }else if(para->c_outer_solver == KSKIPCR)
     {
-      warning_log("kskipcr have some bug");
+      warning_log((char*)"kskipcr have some bug");
     }else if(para->c_outer_solver == BICG)
     {
       handle_out = BICG_CRS(val, col, ptr, Tval, Tcol, Tptr, bvec, xvec, para, N, NNZ, isinner);
@@ -33,7 +33,7 @@ int outer_selecter(struct Parameter *para, double *bvec, double *xvec, double *v
       handle_out = KSKIPBICG_CRS(val, col, ptr, Tval, Tcol, Tptr, bvec, xvec, para, N, NNZ, isinner);
     }
     else{
-      error_log("not define now");
+      error_log((char*)"not define now");
       return -1;
     }
   }else if(para->isVP==true)
@@ -52,22 +52,22 @@ int outer_selecter(struct Parameter *para, double *bvec, double *xvec, double *v
       handle_out = VPGMRES_CRS(val, col, ptr, Tval, Tcol, Tptr, bvec, xvec, para, N, NNZ, isinner);
     }
     else{
-      error_log("not define now");
+      error_log((char*)"not define now");
       return -1;
     }
   }
   else{
-    error_log("not define now");
+    error_log((char*)"not define now");
     return -1;
   }
   if(handle_out==1)
   {
-    normal_log("OuterSolver convergence");
+    normal_log((char*)"OuterSolver convergence");
   }else if(handle_out==-1)
   {
-    error_log("error in outer_selecter");
+    error_log((char*)"error in outer_selecter");
   }else{
-    normal_log("OuterSolver NOT convergence");
+    normal_log((char*)"OuterSolver NOT convergence");
   }
   return 0;
 }
@@ -96,27 +96,27 @@ int inner_selecter(struct Parameter *para, double *bvec, double *xvec, double *v
       handle_in = KSKIPCG_CRS(val, col, ptr, Tval, Tcol, Tptr, bvec, xvec, para, N, NNZ, isinner);
     }else if(para->c_inner_solver == KSKIPCR)
     {
-      warning_log("kskipcr have some bug");
+      warning_log((char*)"kskipcr have some bug");
     }else if(para->c_inner_solver == BICG){
       handle_in = BICG_CRS(val, col, ptr, Tval, Tcol, Tptr, bvec, xvec, para, N, NNZ, isinner);
     }else if(para->c_inner_solver == KSKIPBICG){
       handle_in = KSKIPBICG_CRS(val, col, ptr, Tval, Tcol, Tptr, bvec, xvec, para, N, NNZ, isinner);
     }
     else{
-      error_log("not define now");
+      error_log((char*)"not define now");
       return -1;
     }
   }else{
-    error_log("error");
+    error_log((char*)"error");
     return -1;
   }
   if(handle_in==1)
   {
-    /* normal_log("InnerSolver convergence"); */
+    /* normal_log((char*)"InnerSolver convergence"); */
   }else if(handle_in==2){
-    /* normal_log("InnerSolver NOT convergence"); */
+    /* normal_log((char*)"InnerSolver NOT convergence"); */
   }else{
-    error_log("error in inner_selecter");
+    error_log((char*)"error in inner_selecter");
     return -1;
   }
   return 0;

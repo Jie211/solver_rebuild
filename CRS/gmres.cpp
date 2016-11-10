@@ -72,7 +72,7 @@ int GMRES_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tpt
 
   if(f_cuda)
   {
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     rvec = malloc_1d(N);
     axvec= malloc_1d(N);
@@ -109,7 +109,7 @@ int GMRES_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tpt
     //Ax0
     if(f_cuda)
     {
-      error_log("not done yet");
+      error_log((char*)"not done yet");
     }else{
       MV_mult_CSR(axvec, val, col, ptr, xvec, N);
     }
@@ -157,7 +157,7 @@ int GMRES_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tpt
         vec_add(xvec, x0vec, tmpvec, N);
 
 #ifdef EBUG
-        normal_log("GCR convergence");
+        normal_log((char*)"GCR convergence");
 #endif
         exit_flag = 1;
         break;
@@ -268,7 +268,7 @@ int GMRES_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tpt
   }
   if(f_cuda)
   {
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     free_1d(rvec);
     free_1d(axvec);

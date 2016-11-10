@@ -36,7 +36,7 @@ int VPCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr
 
   if(f_cuda)
   {
-    error_log("cuda not done yet");
+    error_log((char*)"cuda not done yet");
   }else{
     rvec = malloc_1d(N);
     pvec = malloc_1d(N);
@@ -63,7 +63,7 @@ int VPCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr
   bnorm = norm_2_d(bvec, N);
 
   if(f_cuda){
-    error_log("Cuda not done yet");
+    error_log((char*)"Cuda not done yet");
   }else{
     MV_mult_CSR(Av, val, col, ptr, xvec, N);
   }
@@ -75,7 +75,7 @@ int VPCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr
   get_error = inner_selecter(para, rvec, zvec, val, col, ptr, Tval, Tcol, Tptr, N, NNZ);
   if(get_error==-1)
   {
-    error_log("error in vpcr - inner_selecter");
+    error_log((char*)"error in vpcr - inner_selecter");
   }
 
   //p=z
@@ -83,7 +83,7 @@ int VPCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr
 
   //Az(Av)
   if(f_cuda){
-    error_log("Cuda not done yet");
+    error_log((char*)"Cuda not done yet");
   }else{
     MV_mult_CSR(Av, val, col, ptr, zvec, N);
   }
@@ -112,7 +112,7 @@ int VPCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr
     //alpha = (z,Az)/(Ap,Ap)
     if(f_cuda)
     {
-      error_log("cuda not done yet");
+      error_log((char*)"cuda not done yet");
     }else{
       tmp = dot_d(Ap, Ap, N);
     }
@@ -131,19 +131,19 @@ int VPCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr
     get_error = inner_selecter(para, rvec, zvec, val, col, ptr, Tval, Tcol, Tptr, N, NNZ);
     if(get_error==-1)
     {
-      error_log("error in vpcg - inner_selecter");
+      error_log((char*)"error in vpcg - inner_selecter");
     }
 
     //Az
     if(f_cuda){
-      error_log("Cuda not done yet");
+      error_log((char*)"Cuda not done yet");
     }else{
       MV_mult_CSR(Av, val, col, ptr, zvec, N);
     }
 
     //(z,Az)
     if(f_cuda){
-      error_log("cuda done yet");
+      error_log((char*)"cuda done yet");
     }else{
       zaz2=dot_d(zvec, Av, N);
     }
@@ -167,7 +167,7 @@ int VPCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr
   printf("loop=%d\n", loop+1);
   if(f_cuda)
   {
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     free_1d(rvec);
     free_1d(pvec);

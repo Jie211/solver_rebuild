@@ -39,7 +39,7 @@ int VPGCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tpt
 
   if(f_cuda)
   {
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     rvec = malloc_1d(N);
     zvec = malloc_1d(N);
@@ -66,7 +66,7 @@ int VPGCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tpt
     //Ax
     if(f_cuda)
     {
-      error_log("not done yet");
+      error_log((char*)"not done yet");
     }else{
       MV_mult_CSR(Av, val, col, ptr, xvec, N);
     }
@@ -81,13 +81,13 @@ int VPGCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tpt
     get_error = inner_selecter(para, rvec, pvec[0], val, col, ptr, Tval, Tcol, Tptr, N, NNZ);
     if(get_error == -1)
     {
-      error_log("error in vpgcr - inner_selecter");
+      error_log((char*)"error in vpgcr - inner_selecter");
     }
 
     //q[0*ndata+x]=A*p[0*ndata+x]
     if(f_cuda)
     {
-      error_log("cuda not done yet");
+      error_log((char*)"cuda not done yet");
     }else{
       MV_mult_CSR(qvec[0], val, col, ptr, pvec[0], N);
     }
@@ -117,7 +117,7 @@ int VPGCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tpt
       //(q,q)
       if(f_cuda)
       {
-        error_log("not done yet");
+        error_log((char*)"not done yet");
       }else{
         qq[kloop] = dot_d(qvec[kloop], qvec[kloop], N);
       }
@@ -126,7 +126,7 @@ int VPGCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tpt
       //alpha=(r, q)/(q, q)
       if(f_cuda)
       {
-        error_log("not done yet");
+        error_log((char*)"not done yet");
       }else{
         dot_tmp = dot_d(rvec, qvec[kloop], N);
       }
@@ -149,7 +149,7 @@ int VPGCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tpt
       get_error = inner_selecter(para, rvec, zvec, val, col, ptr, Tval, Tcol, Tptr, N, NNZ);
       if(get_error == -1)
       {
-        error_log("error in vpgcr - inner_selecter");
+        error_log((char*)"error in vpgcr - inner_selecter");
       }
 
 
@@ -163,7 +163,7 @@ int VPGCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tpt
       for(iloop=0; iloop<=kloop; iloop++){
         //beta=-(Az,qvec)/(q,q)
         if(f_cuda){
-          error_log("not done yet");
+          error_log((char*)"not done yet");
         }else{
           dot_tmp = dot_d(Av, qvec[iloop], N);
         }
@@ -195,7 +195,7 @@ int VPGCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tpt
   printf("loop=%d\n", loop+1);
   if(f_cuda)
   {
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     free_1d(rvec);
     free_1d(zvec);

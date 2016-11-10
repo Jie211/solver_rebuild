@@ -21,13 +21,14 @@ void normal_log(char *output)
   printf("\x1b[0m");
 }
 
+
 double *malloc_1d(int num)
 {
   double *tmp;
   tmp=(double *)malloc(sizeof(double)*num);
   if(!tmp)
   {
-    error_log("1 dim double malloc error");
+    error_log((char*)"1 dim double malloc error");
     exit(-1);
   }
   return tmp;
@@ -40,7 +41,7 @@ double **malloc_2d(int num_x, int num_y)
   tmp=(double **)malloc(sizeof(double*)*num_y);
   if(!tmp)
   {
-    error_log("2 dim double malloc error[1]");
+    error_log((char*)"2 dim double malloc error[1]");
     exit(-1);
   }
   for(i=0; i<num_y; i++)
@@ -48,7 +49,7 @@ double **malloc_2d(int num_x, int num_y)
     tmp[i] = (double *)malloc(sizeof(double)*num_x);
     if(!tmp[i])
     {
-      error_log("2 dim double malloc error[2]");
+      error_log((char*)"2 dim double malloc error[2]");
       exit(-1);
     }
   }
@@ -61,7 +62,7 @@ int *malloc_1i(int num)
  tmp=(int *)malloc(sizeof(int)*num);
   if(!tmp)
   {
-    error_log("1 dim int malloc error");
+    error_log((char*)"1 dim int malloc error");
     exit(-1);
   }
   return tmp;
@@ -73,7 +74,7 @@ int** malloc_2i(int num_x, int num_y)
   tmp=(int **)malloc(sizeof(int*)*num_y);
   if(!tmp)
   {
-    error_log("2 dim double malloc error[1]");
+    error_log((char*)"2 dim double malloc error[1]");
     exit(-1);
   }
   for(i=0; i<num_y; i++)
@@ -81,7 +82,7 @@ int** malloc_2i(int num_x, int num_y)
     tmp[i] = (int *)malloc(sizeof(int)*num_x);
     if(!tmp[i])
     {
-      error_log("2 dim double malloc error[2]");
+      error_log((char*)"2 dim double malloc error[2]");
       exit(-1);
     }
   }
@@ -145,7 +146,7 @@ int set_openmp_thread(const int thread)
     return -1;
   omp_set_num_threads(thread);
 #ifdef EBUG
-  normal_log("pass set openmp thread");
+  normal_log((char*)"pass set openmp thread");
 #endif
   return 0;
 }
@@ -155,7 +156,7 @@ FILE *file_init(const char *name, const char *mode)
   FILE *tmp;
   if((tmp = fopen(name, mode)) == NULL)
   {
-    warning_log("file open failed");
+    warning_log((char*)"file open failed");
     exit(-1);
   }
   return (tmp);

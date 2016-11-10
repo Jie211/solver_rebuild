@@ -75,12 +75,12 @@ int get_opt(int argc, char *argv[], struct Parameter *para)
         break;
       case 'S':
         error=check_solver(optarg, &para->c_outer_solver);
-        if(error_handle(error, "error in outer solver name")!=0)
+        if(error_handle(error, (char*)"error in outer solver name")!=0)
           return -1;
         break;
       case 's':
         error=check_solver(optarg, &para->c_inner_solver);
-        if(error_handle(error, "error in inner solver name")!=0)
+        if(error_handle(error, (char*)"error in inner solver name")!=0)
           return -1;
         break;
       case 'L':
@@ -123,12 +123,12 @@ int get_opt(int argc, char *argv[], struct Parameter *para)
         show_help();
         exit(0);
       default:
-        warning_log("Unknow option");
+        warning_log((char*)"Unknow option");
         return -1;
     }
   }
 #ifdef EBUG
-  normal_log("pass get_opt");
+  normal_log((char*)"pass get_opt");
 #endif
   return 0;
 }
@@ -177,43 +177,43 @@ int check_opt(struct Parameter *para)
 {
   if(strncmp(para->c_matrix, "", 128)==0)
   {
-    warning_log("Must set Matrix name");
+    warning_log((char*)"Must set Matrix name");
     return -1;
   }
   if(para->c_outer_solver==NONE)
   {
-    warning_log("Must set a Solver name");
+    warning_log((char*)"Must set a Solver name");
     return -1;
   }
   if(para->i_outer_maxloop <=0 || para->i_inner_maxloop <=0)
   {
-    warning_log("Maxloop must larger than 0");
+    warning_log((char*)"Maxloop must larger than 0");
     return -1;
   }
   if(para->d_outer_eps <=0.0 || para->d_inner_eps <=0.0)
   {
-    warning_log("EPS must larger than 0.0");
+    warning_log((char*)"EPS must larger than 0.0");
     return -1;
   }
   if(para->i_outer_restart <0 || para->i_inner_restart <0)
   {
-    warning_log("Restart can not smaller than 0");
+    warning_log((char*)"Restart can not smaller than 0");
     return -1;
   }
   if(para->i_outer_kskip <0 || para->i_inner_kskip <0)
   {
-    warning_log("Kskip can not smaller than 0");
+    warning_log((char*)"Kskip can not smaller than 0");
     return -1;
   }
   if(para->c_outer_solver==VPCG || para->c_outer_solver==VPCR || para->c_outer_solver==VPGCR || para->c_outer_solver==VPGMRES)
   {
     if(para->c_inner_solver==NONE)
     {
-      warning_log("Outer solver use VP method, must set a inner solver");
+      warning_log((char*)"Outer solver use VP method, must set a inner solver");
       return -1;
     }else if(para->c_inner_solver==VPCG || para->c_inner_solver==VPCR || para->c_inner_solver==VPGCR || para->c_inner_solver==VPGMRES)
     {
-      warning_log("Outer & Inner recurrence VP method !!");
+      warning_log((char*)"Outer & Inner recurrence VP method !!");
       return -1;
     }else
     {
@@ -224,7 +224,7 @@ int check_opt(struct Parameter *para)
   {
     if(para->c_outer_solver!=VPCG && para->c_outer_solver!=VPCR && para->c_outer_solver!=VPGCR && para->c_outer_solver!=VPGMRES)
     {
-      warning_log("Outer method was not VP, don't set inner solver");
+      warning_log((char*)"Outer method was not VP, don't set inner solver");
       return -1;
     }
   }
@@ -301,7 +301,7 @@ int check_solver(char *optarg, enum SolverName *solver)
     *solver=KSKIPBICG;
   }
   else{
-    warning_log("not defined solver name");
+    warning_log((char*)"not defined solver name");
     return -1;
   }
   return 0;
@@ -329,7 +329,7 @@ int find_mat(struct Parameter *para)
 
   if((dir = opendir(path)) == NULL)
   {
-    warning_log("open path failed");
+    warning_log((char*)"open path failed");
     return -1;
   }
   
@@ -348,12 +348,12 @@ int find_mat(struct Parameter *para)
 
   if(!dir_found)
   {
-    warning_log("find matrix failed");
+    warning_log((char*)"find matrix failed");
     return -1;
   }else
   {
 #ifdef EBUG
-    normal_log("find matrix dir");
+    normal_log((char*)"find matrix dir");
 #endif
   }
 
@@ -362,7 +362,7 @@ int find_mat(struct Parameter *para)
   strcat(fullpath, "/");
   if((dir = opendir(fullpath)) == NULL)
   {
-    warning_log("open fullpath failed");
+    warning_log((char*)"open fullpath failed");
     return -1;
   }
   for(dp=readdir(dir); dp!=NULL; dp=readdir(dir))
@@ -393,10 +393,10 @@ int find_mat(struct Parameter *para)
   
   if(!file_found)
   {
-    warning_log("matrix file meybe missing ?");
+    warning_log((char*)"matrix file meybe missing ?");
     return -1;
   }else{
-    normal_log("find matrix file");
+    normal_log((char*)"find matrix file");
   }
 
   strcpy(para->bx_path, fullpath);
@@ -418,17 +418,17 @@ int get_mat_head(const struct Parameter *para, int *N, int *NNZ)
 
   if((in1=fopen(para->bx_path, "r")) == NULL)
   {
-    warning_log("fopen failed");
+    warning_log((char*)"fopen failed");
     return -1;
   }
   if((in2=fopen(para->col_path, "r")) == NULL)
   {
-    warning_log("fopen failed");
+    warning_log((char*)"fopen failed");
     return -1;
   }
   if((in3=fopen(para->ptr_path, "r")) == NULL)
   {
-    warning_log("fopen failed");
+    warning_log((char*)"fopen failed");
     return -1;
   }
 
@@ -440,23 +440,23 @@ int get_mat_head(const struct Parameter *para, int *N, int *NNZ)
   {
     if(N_x[i] != N_y[i])
     {
-      warning_log("N_x != N_y");
+      warning_log((char*)"N_x != N_y");
       return -1;
     }
   }
   if(N_x[0] != N_x[1] || N_x[1] != N_x[2] || N_x[2] != N_x[0])
   {
-    warning_log("N_x was not same in 3files");
+    warning_log((char*)"N_x was not same in 3files");
     return -1;
   }
   if(N_y[0] != N_y[1] || N_y[1] != N_y[2] || N_y[2] != N_y[0])
   {
-    warning_log("N_y was not same in 3files");
+    warning_log((char*)"N_y was not same in 3files");
     return -1;
   }
   if(N_NNZ[0] != N_NNZ[1] || N_NNZ[1] != N_NNZ[2] || N_NNZ[2] != N_NNZ[0])
   {
-    warning_log("N_NNZ was not same in 3files");
+    warning_log((char*)"N_NNZ was not same in 3files");
     return -1;
   }
 
@@ -470,7 +470,7 @@ int get_mat_head(const struct Parameter *para, int *N, int *NNZ)
 #ifdef EBUG
   char size[10];
   sprintf(size, "get N=%d, NNZ=%d", *N, *NNZ);
-  normal_log(size);
+  normal_log((char*)size);
 #endif
 
   return 0;
@@ -484,17 +484,17 @@ int get_mat_data(const struct Parameter *para, int *col, int *ptr, double *val, 
 
   if((in1 = fopen(para->col_path, "r")) == NULL)
   {
-    warning_log("open file failed");
+    warning_log((char*)"open file failed");
     return -1;
   }
   if((in2 = fopen(para->ptr_path, "r")) == NULL)
   {
-    warning_log("open file failed");
+    warning_log((char*)"open file failed");
     return -1;
   }
   if((in3 = fopen(para->bx_path, "r")) == NULL)
   {
-    warning_log("open file failed");
+    warning_log((char*)"open file failed");
     return -1;
   }
 
@@ -526,7 +526,7 @@ int get_mat_data(const struct Parameter *para, int *col, int *ptr, double *val, 
   fclose(in2);
   fclose(in3);
 #ifdef EBUG
-  normal_log("done get Mat data");
+  normal_log((char*)"done get Mat data");
 #endif
 
   return 0;

@@ -46,7 +46,7 @@ int VPGMRES_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *T
 
   if(f_cuda)
   {
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     rvec = malloc_1d(N);
     axvec = malloc_1d(N);
@@ -139,7 +139,7 @@ int VPGMRES_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *T
       //inner solver
       error_message = inner_selecter(para, vvec, zvec, val, col, ptr, Tval, Tcol, Tptr, N, NNZ);
       if(error_message == -1){
-        error_log("error in vpgmres - inner_selecter");
+        error_log((char*)"error in vpgmres - inner_selecter");
       }
 
       /* //Av & W */
@@ -227,7 +227,7 @@ int VPGMRES_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *T
 
   if(f_cuda)
   {
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     free_1d(rvec);
     free_1d(axvec);

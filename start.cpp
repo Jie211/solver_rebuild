@@ -16,25 +16,25 @@ int csr_start(int argc, char *argv[])
   init_ver(&para);
 
   error = get_opt(argc, argv, &para);
-  if(error_handle(error, "error in get_cmd")!=0)
+  if(error_handle(error, (char*)"error in get_cmd")!=0)
     return -1;
 
   error = check_opt(&para);
-  if(error_handle(error, "error in check_cmd")!=0)
+  if(error_handle(error, (char*)"error in check_cmd")!=0)
     return -1;
 
   error = find_mat(&para);
-  if(error_handle(error, "error in find_mat")!=0)
+  if(error_handle(error, (char*)"error in find_mat")!=0)
     return -1;
 
   show_opt(&para);
 
   error = set_openmp_thread(para.i_thread);
-  if(error_handle(error, "error in set_openmp_thread")!=0)
+  if(error_handle(error, (char*)"error in set_openmp_thread")!=0)
     return -1;
 
   error = get_mat_head(&para, &N, &NNZ);
-  if(error_handle(error, "error in get_mat_head")!=0)
+  if(error_handle(error, (char*)"error in get_mat_head")!=0)
     return -1;
 
   if( para.f_cuda == false )
@@ -50,20 +50,20 @@ int csr_start(int argc, char *argv[])
     Tcol=malloc_1i(NNZ);
     Tptr=malloc_1i(N+1);
   }else{
-    error_log("Cuda not done now");
+    error_log((char*)"Cuda not done now");
     return -1;
   }
 
 
   error = get_mat_data(&para, col, ptr, val, bvec, xvec, N, NNZ);
-  if(error_handle(error, "error in get_mat_data")!=0)
+  if(error_handle(error, (char*)"error in get_mat_data")!=0)
     return -1;
 
   //A^T
   Transpose_d(val, col, ptr, Tval, Tcol, Tptr, N, NNZ);
 
   error = outer_selecter(&para, bvec, xvec, val, col, ptr, Tval, Tcol, Tptr, N, NNZ);
-  if(error_handle(error, "error in outer_selecter")!=0)
+  if(error_handle(error, (char*)"error in outer_selecter")!=0)
     return -1;
 
   show_opt(&para);
@@ -81,7 +81,7 @@ int csr_start(int argc, char *argv[])
     free_1i(Tcol);
     free_1i(Tptr);
   }else{
-    error_log("Cuda not done now");
+    error_log((char*)"Cuda not done now");
     return -1;
   }
   return 0;

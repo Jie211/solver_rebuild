@@ -51,7 +51,7 @@ int GCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr,
 
   if(f_cuda)
   {
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     rvec = malloc_1d(N);
     Av = malloc_1d(N);
@@ -88,7 +88,7 @@ int GCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr,
     //Ax
     if(f_cuda)
     {
-      error_log("not done yet");
+      error_log((char*)"not done yet");
     }else{
       MV_mult_CSR(Av, val, col, ptr, xvec, N);
     }
@@ -102,7 +102,7 @@ int GCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr,
     //Ap
     if(f_cuda)
     {
-      error_log("not done yet");
+      error_log((char*)"not done yet");
     }else{
       MV_mult_CSR(qvec[0], val, col, ptr, pvec[0], N);
     }
@@ -122,7 +122,7 @@ int GCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr,
       if(error <= d_eps)
       {
 /* #ifdef EBUG */
-/*         normal_log("GCR convergence"); */
+/*         normal_log((char*)"GCR convergence"); */
 /* #endif */
         exit_flag = 1;
         out_flag=true;
@@ -138,7 +138,7 @@ int GCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr,
       //(q, q)
       if(f_cuda)
       {
-        error_log("not done");
+        error_log((char*)"not done");
         return -1;
       }else{
         dot_tmp = dot_d(qvec[kloop], qvec[kloop], N);
@@ -150,7 +150,7 @@ int GCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr,
       //alpha = (r,q)/(q,q)
       if(f_cuda)
       {
-        error_log("not done");
+        error_log((char*)"not done");
         return -1;
       }else{
         dot_tmp = dot_d(rvec, qvec[kloop], N);
@@ -171,7 +171,7 @@ int GCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr,
       //Ar
       if(f_cuda)
       {
-        error_log("not done ");
+        error_log((char*)"not done ");
         return -1;
 
       }else{
@@ -187,7 +187,7 @@ int GCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr,
         //beta=-(Az, qvec)/(q,q)
         if(f_cuda)
         {
-          error_log("not done yet");
+          error_log((char*)"not done yet");
         }else{
           dot_tmp = dot_d(Av, qvec[iloop], N);
         }
@@ -225,7 +225,7 @@ int GCR_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr,
   }
   if(f_cuda)
   {
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     free_1d(rvec);
     free_1d(Av);

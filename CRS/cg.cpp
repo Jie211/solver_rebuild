@@ -36,7 +36,7 @@ int CG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, 
 
   if(f_cuda)
   {
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     Av = malloc_1d(N);
     rvec = malloc_1d(N);
@@ -69,7 +69,7 @@ int CG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, 
   //Ax
   if(f_cuda)
   {
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     MV_mult_CSR(Av, val, col, ptr, xvec, N);
   }
@@ -83,7 +83,7 @@ int CG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, 
   //r dot
   if(f_cuda)
   {
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     rr = dot_d(rvec, rvec, N);
   }
@@ -103,7 +103,7 @@ int CG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, 
     if(error <= d_eps)
     {
 /* #ifdef EBUG */
-/*       normal_log("CG convergence"); */
+/*       normal_log((char*)"CG convergence"); */
 /* #endif */
       exit_flag = 1;
       break;
@@ -112,7 +112,7 @@ int CG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, 
     //Ap
     if(f_cuda)
     {
-      error_log("not done yet");
+      error_log((char*)"not done yet");
     }else{
       MV_mult_CSR(Av, val, col, ptr, pvec, N);
     }
@@ -120,7 +120,7 @@ int CG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, 
     //alpha = (r,r)/(p,ap)
     if(f_cuda)
     {
-      error_log("not done yet");
+      error_log((char*)"not done yet");
     }else{
       dot = dot_d(pvec, Av, N);
     }
@@ -136,7 +136,7 @@ int CG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, 
     //rr2 dot
     if(f_cuda)
     {
-      error_log("not done yet");
+      error_log((char*)"not done yet");
     }else{
       rr2 = dot_d(rvec, rvec, N);
     }
@@ -168,7 +168,7 @@ int CG_CRS(double *val, int *col, int *ptr, double *Tval, int *Tcol, int *Tptr, 
 
   if(f_cuda)
   {
-    error_log("not done yet");
+    error_log((char*)"not done yet");
   }else{
     free_1d(rvec);
     free_1d(pvec);
